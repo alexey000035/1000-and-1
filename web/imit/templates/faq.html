@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}Часто задаваемые вопросы{% endblock %}
+
+{% block content %}
+    {% if current_user.is_authenticated and current_user.has_role('editor') %}
+    <form id='faq_file_form' method='POST' action='/faq/replace_file'
+        enctype='multipart/form-data'>
+        <h2>Замена файла с ЧаВо</h2>
+        {{ form.csrf_token }}
+	{{ form.file.label }} {{ form.file()}}
+	<input type="submit" value="Заменить"/>
+    </form>
+    {% endif %}
+    <h1 class="title">Часто задаваемые вопросы</h1>
+    {% for cat in faq_content.categories %}
+       <h3 onclick="var it = $(this); it.next('div.faq-list').toggle(); var t =
+       it.find('span.state'); if(t.text()=='►') t.text('▼'); else
+       t.text('►');"><a href="javascript:;"><span class="state">►</span> {{cat.title}}</a></h3>
+       <div class='faq-list' style="display:none;">
+	 {% for q in cat.questions %}
+	 <p><b>{{ q.q }}</b><br/>
+	 {{q.a}}</p>
+	 {% endfor %}
+       </div>
+    {% endfor %}
+    
+    {% if faq_content.date %}
+        <p style="text-align:right">Дата обновления: {{faq_content.date}}</p>
+    {% endif %}
+{% endblock %}

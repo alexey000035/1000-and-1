@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+    {% if current_user.is_authenticated and current_user.has_role('editor') %}
+        <a href="/page/{{ page.name }}/edit">Редактировать</a>
+        {% if not page.is_archive %}
+            | <a href="/page/{{ page.name }}/archive">Архивировать</a>
+        {% endif %}
+    {% endif %}
+    <h1 class="title">{{ page.title }}</h1>
+    {{ page.text | safe }}
+    <br/>
+    {% if page.last_edit %}
+        <i>{{ _("Дата обновления") }}: {{ page.last_edit.strftime('%d.%m.%Y') }}</i>
+    {% endif %}
+    {% if page.archives.count() > 0 %}
+        <p><b>Архив:</b></p>
+        <ul>
+            {% for archive in page.archives %}
+                <li><a href="/page/{{ archive.name }}">{{ archive.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <br/>
+{% endblock %}

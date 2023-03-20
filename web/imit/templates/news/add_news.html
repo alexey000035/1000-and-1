@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block title %}Добавление новости{% endblock %}
+
+{% block content %}
+    <h1>Добавление новости</h1>
+    {% include 'error_flash.html' %}
+    <a href="/page/instruction">Инструкция</a><br/>
+    <br/>
+    <form method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+        {{ add_form.csrf_token }}
+        {{ add_form.title.label }} {{ add_form.title() }} <br/>
+        {{ add_form.date(style="display:none") }}<br/>
+        {{ add_form.full_cover_image() }}
+
+        {{ add_form.delete_cover_image(style="display:none") }}
+        {{ add_form.cropped_cover_image_data.label }} {{ add_form.cropped_cover_image_data() }} <br/>
+        <div id="cover_image_block"
+                {% if post is not defined or not post.cover_image %}
+             style="display: none"
+                {% endif %}
+        >
+            <img id="cover_image_preview" width="150" height="150"
+                    {% if post is defined and post.cover_image %}
+                 src="/files/covers/{{ post.cover_image }}"
+                    {% else %}
+                 src="#"
+                    {% endif %}/>
+            <br/>
+            <button id="delete_cover_image_button">Удалить изображение</button>
+            <br/>
+        </div>
+
+        <br/>
+        <div id="cropper_block" style="display: none">
+            <img id="cover_image_cropper" style="max-width: 100%" alt="title image cropper" src="#" height="300"/>
+            <br/>
+            <button id="apply_crop_button">Сохранить изображение</button>
+            <button id="cancel_crop_button">Отменить изменение изображения</button>
+            <br/>
+        </div>
+        {{ add_form.full_text.label }} {{ add_form.full_text() }} <br/>
+        <input type="submit" value="Сохранить"/>
+    </form>
+    <br/>
+    {% include "file_manager.html" %}
+    <script>
+        imit.News.initTinyMCE('#full_text', 'Текст новости');
+        {% if post is defined and post.id is defined and post.origin != "vk" %}
+            imit.FileManager.initFileManager({"post": {{ post.id }}});
+        {% else %}
+            imit.FileManager.initFileManager({"block": true, "block_message": "Необходимо сохранить новость"});
+        {% endif %}
+    </script>
+
+{% endblock %}

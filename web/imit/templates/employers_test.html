@@ -1,0 +1,620 @@
+{% extends "layout.html" %}
+{% block title %}Работодатели{% endblock %}
+
+{% block content %}
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+    .itemp{
+	margin-bottom:20px; 
+	border:1px solid #cecece; 
+	border-radius:10px; 
+	padding:7px;
+	width:25%;
+	min-width:292px;
+	height:80px;
+	float:left;
+	margin-right:10px;
+	background-color:#fff;
+    }
+    .itemp.line{
+        margin-bottom: -1px;
+	border:1px solid #000;  
+	border-radius:0px; 
+	width:100%;
+	min-width:600px;
+	height:80px;
+    }
+    .itemp a.url{
+	display:none;
+    }
+    .itemp div.contact{
+	display:none;
+    }
+    .itemp div.head{
+	display:none;
+    }
+    .itemp.line a.url{
+	display:block;
+    }
+    .itemp.line div.image{
+	width:140px;
+        float:left;
+    }
+    .itemp.line div.title{
+        float:left;
+        margin-left:20px;
+	display:inline;
+	width:30%;
+    }
+    .itemp.line div.contact{
+        float:left;
+	display:inline;
+	width:250px;
+    }
+    .itemp.line div.head{
+        float:left;
+	display:inline;
+	width:140px;
+    }
+    .itemp div.image img{
+	margin:5px; 
+	max-height:50px; 
+	max-width:130px;
+    }
+    .button {
+	    font-size: 1.4em;
+	    height: 45px;
+	    line-height: 1em;
+	    font-weight: bold;
+	    cursor: pointer;
+	    color: black;
+    }
+    .button span{
+      font-size:0.8em;	
+    }
+    .button:hover,
+    .button:focus {
+	background-color: #dedede;
+	background-position: 0 -15px
+    }
+    .button:active,
+    .button.active {
+	background-color: #dedede;
+	border-color: #dedede;
+    }
+    .moreinfo{
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 99999; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full width */
+	overflow-y: scroll;
+	background-color: rgba(0, 0, 0, 0.8);
+    }
+    .moreinfo_test {
+    }
+    .moreinfo p{
+      text-indent: 20px; 
+      text-align:justify;
+    }
+    /* Modal Content */
+    .moreinfo-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	overflow-y: scroll; /* Enable scroll if needed */
+	width: 60%;
+    }
+    .moreinfo-content-test {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 100%;
+    }
+    .moreinfo-content .mainlogo{
+       width:50%;
+       max-width:300px;
+       max-height:200px;
+       margin:20px;
+    }
+
+    .moreinfo-content-test .mainlogo{
+       width:50%;
+       max-width:300px;
+       max-height:200px;
+       margin:20px;
+    }
+
+    /* The Close Button */
+    .closess {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+    }
+
+    .closess:hover,
+    .closess:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+    }
+
+    .noscroll {
+	overflow: hidden;
+    }
+    .scroll-moreinfo {
+	overflow-y: scroll;
+    }
+    @media screen and (max-width:680px) {
+	.itemp.line div.contact{
+	    display:none;
+	}
+	.itemp.line div.head{
+	    display:none;
+	}
+	.itemp.line{
+	    margin-bottom: -1px;
+	    border:1px solid #000;  
+	    border-radius:0px; 
+	    width:100%;
+	    min-width:300px;
+	    height:80px;
+	}
+	.itemp.line a.url{
+	    display:none;
+	}
+
+	#partner_info {
+	    display:block;
+	    clear:both;
+	}
+	.moreinfo-content-test .mainlogo{
+	    max-width:150px;
+	    max-height:100px;
+	}
+
+    }
+
+    </style>
+
+    <script>
+	$(document).ready(function() { 
+	    $('.itemp').addClass('line');
+	    var partners = {
+		'opti-soft': 'test',
+	    };
+	    
+	    // Open form with more info.
+	    $(document).on('click', '.open-moreinfo', function (e) {
+		// Show form.
+		var key = $(this).attr('data-key');
+		var logo = $(this).attr('data-logo-url');
+		$("#partner_info").html($('#partner_' + key).html());
+		$("#partner_image").attr('src', logo);
+		$("#upload-image-modal").modal();
+		return false;
+	    });
+	    
+	    // Hide form with more info.
+	    $(document).on('click', '.closess', function (e) {
+		// Hide: form.
+		//$(this).parent().parent().hide(); 
+		//$(this).parent().parent().prev().show(); 
+		// Remove class for body to no scrolling 
+		//$("body").removeClass("noscroll");
+		$("#upload-image-modal").modal();
+		return false;
+	    });
+	    // Hide form with more info.
+	    $(document).on('click', '#closess_modal', function (e) {
+		$("#upload-image-modal").modal('hide');
+		return false;
+	    });
+	});
+    </script>
+   
+<!-- Modal for uploading image. -->
+<div id="upload-image-modal" class="modal" tabindex="-1" role="dialog"  data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+      <div class="title">
+        <div class="moreinfo_test">
+	 <div class="moreinfo-content-test">
+	  <div>
+	    <a class="closess" id="closess_modal">Закрыть</a>
+	    <img align="left" class="mainlogo" id="partner_image">
+	  </div>
+	  <div id="partner_info">
+	  
+	  </div>
+	 </div>
+	</div>
+      </div>
+        </div>
+    </div>
+</div>
+ 
+    
+    <h1 class="title">Работа в сфере ИКТ и ПО</h1>
+    <p>Здесь представлены компании-партнеры нашего института, ведущие разработки и исследования в сфере
+Информационно-коммуникационных технологий и, прежде всего, в области разработки и сопровождения программного обеспечения. Представлены также
+организации, использующие эти технологии и программное обеспечение на современном уровне.</p>
+
+    <p>Рекомендуем нашим студентам использовать эту информацию при поиске работы. Инициирующие отношения с компанией/организацией студент может
+установить, например, выбрав в декабре для разработки сформулированный ею групповой программный проект по дисциплине "Технология производства
+программного обеспечения II" (3 курс, весенний семестр, см. <a href="http://cs.petrsu.ru/studies/index.php.ru">раздел "Учебный процесс"</a>).</p>
+
+    <p>Дополнительную информацию о прохождении
+практики, возможного трудоустройства и сотрудничества студентов ИМИТ с
+компаниями можно уточнить в <a href="https://imit.petrsu.ru/page/structure#dir">дирекции института</a>.</p>
+
+    <p>
+    <em>Обозначение</em>. Символ
+    <img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="15px" style="margin:0px;"> и
+    следующий за ним номер года, находящиеся справа от
+    фамилии руководителя компании/организации-партнера
+    указывют год окончания им Математического факультета
+    ПетрГУ (с 2016 г. - Института математики и
+    информационных технологий).
+    </p>
+    <p>
+      <a href="#" onClick="$('.itemp').removeClass('line'); return false;">плитки</a> / 
+      <a href="#" onClick="$('.itemp').addClass('line'); return false;">таблица</a></p>
+    <br clear="all">
+    <div class="itemp">
+      <div class="image">
+            <img src="./images/opti-soft.png" align="left"> 
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='opti-soft' data-logo-url='./images/opti-soft.png'>«Опти-Софт»</a>
+	<a href="http://www.opti-soft.ru/" target="_blank" class="url">http://www.opti-soft.ru/</a>
+      </div>
+      <div class="contact">
+        Email: ashabaev@opti-soft.ru<br>
+        Телефон: (8142) 713210, 713222, 713216
+      </div>
+      <div class="head">
+        Шабаев А. И.<br><img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="20px" align="left"> <1999>
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/inbisyst.png" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='inbisist' data-logo-url='./images/inbisyst.png'>«Инбисист»</a>
+	<a href="https://inbisyst.ru/" target="_blank" class="url">https://inbisyst.ru/</a>
+      </div>
+      <div class="contact">
+	Email: info@inbisyst.ru<br>
+	    Телефон: (814-2) 28-52-20
+      </div>
+      <div class="head">
+	Марахтанов&nbsp;А.&nbsp;Г.&nbsp;<br><img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="20px" align="left"> <2005>
+      </div>
+    </div>
+
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/arcusys.svg" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='arcusys' data-logo-url='./images/arcusys.svg'>«Аркусис»</a>
+	<a href="https://www.arcusys.com/" target="_blank" class="url">https://www.arcusys.com/</a>
+      </div>
+      <div class="contact">
+	Email: yulia.shamatura@arcusys.com<br>
+	    VK: <a href="https://vk.com/arcusys_official" target="_blank">https://vk.com/arcusys_official</a>
+      </div>
+      <div class="head">
+	Емельянов А. В.<br><img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="20px" align="left">
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/infocraft.png" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='infocraft' data-logo-url='./images/infocraft.png'>«Инфокрафт <span>Северо-Запад</span>»</a>
+	<a href="https://www.infocraft.ru/" target="_blank" class="url">https://www.infocraft.ru/</a>
+      </div>
+      <div class="contact">
+	Email: info@infocraft.ru<br>
+            Телефон: (8142) 59-29-52
+      </div>
+      <div class="head">
+	Шульгин А. В.<br><img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="20px" align="left"> <2001>
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/interso.png" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='interso' data-logo-url='./images/interso.png'><span>ООО</span> «Интэрсо»</a>
+	<a href="http://interso.ru/" target="_blank" class="url">http://interso.ru/</a>
+      </div>
+      <div class="contact">
+	Email: contact@interso.ru<br>
+          Телефон: +7 (8142) 33-22-11
+      </div>
+      <div class="head">
+	Волков К. Г.<br><img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="20px" align="left"> <2002>
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/natlex2.png" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='natlex' data-logo-url='./images/natlex2.png'>«Натлекс»</a>
+	<a href="http://natlex.ru/" target="_blank" class="url">http://natlex.ru/</a>
+      </div>
+      <div class="contact">
+	Email: info@natlex.ru<br>
+        Телефон: +7 (921) 228-20-17
+      </div>
+      <div class="head">
+        Мышаков Ю. В.
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/neosystems3.png" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='neosystems' data-logo-url='./images/neosystems3.png'>«Неосистемы <span>Северо-Запад</span>»</a>
+	<a href="http://neosystems.ru/" target="_blank" class="url">http://neosystems.ru/</a>
+      </div>
+      <div class="contact">
+          Email: info@neosystems.ru<br>
+          Телефон: 8 (8142) 67-21-20
+      </div>
+      <div class="head">
+	Дураков В. Л.
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/playrix.png" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='neosystems' data-logo-url='./images/playrix.png'>«Playrix»</a>
+	<a href="http://playrix.com/" target="_blank" class="url">http://playrix.com/</a>
+      </div>
+      <div class="contact">
+	Email: contact@playrix.com
+      </div>
+      <div class="head">
+
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/roskvartal.png" align="left"> 
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='roskvartal' data-logo-url='./images/roskvartal.png'>«РосКвартал»</a>
+	<a href="http://roskvartal.ru/" target="_blank" class="url">http://roskvartal.ru/</a>
+      </div>
+      <div class="contact">
+	Email: mail@roskvartal.ru
+      </div>
+      <div class="head">
+	Шевчук В. И.
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/technomedia.png" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='roskvartal' data-logo-url='./images/technomedia.png'>«Техномедиа»</a>
+	<a href="http://sysdyn.ru" target="_blank" class="url">http://sysdyn.ru</a>
+      </div>
+      <div class="contact">
+	Email: iosemenov@gmail.ru
+      </div>
+      <div class="head">
+	Семенов И. О.<br><img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="20px" align="left"> <2007>
+      </div>
+    </div>
+    
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/trinity2.jpg" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='trinity' data-logo-url='./images/trinity2.jpg'>«Тринити Диджитал»</a>
+	<a href="http://trinitydigital.ru/" target="_blank" class="url">http://trinitydigital.ru/</a>
+      </div>
+      <div class="contact">
+	    Email: ak@trinitydigital.ru<br>
+	    VK: <a href="https://vk.com/trinity_digital" target="_blank">https://vk.com/trinity_digital</a>
+      </div>
+      <div class="head">
+	Мальмберг А. С.
+      </div>
+    </div>
+    <div class="itemp">
+      <div class="image">
+        <img src="./images/logo-kontur.png" align="left">
+      </div>
+      <div class="title">
+        <a class="button open-moreinfo" data-key='kontur' data-logo-url='./images/logo-kontur.png'>«СКБ Контур»</a>
+        <a href="https://kontur.ru/voidmain" target="_blank" class="url">https://kontur.ru/voidmain</a>
+      </div>
+      <div class="contact">Email: kontur-student@kontur.ru</div>
+      <div class="head"></div>
+    </div>
+    <br clear="all">
+   
+<div style="display:none">
+    <div id="partner_opti-soft">   
+	  <p>
+	    <b>Контакты:</b><br> 
+	    Директор: Шабаев Антон Игоревич, выпускник ПетрГУ <img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="15px" style="margin:0px;"> <1999><br>
+	    URL: <a href="http://www.opti-soft.ru/" target="_blank">http://www.opti-soft.ru/</a><br> 
+	    Email: ashabaev@opti-soft.ru<br>
+	    Телефон: (8142) 713210, 713222, 713216
+	  </p>
+	  <p>Компания «Опти-Софт» создана при IT-парке при 100% участии Петрозаводского государственного университета. Отличительная особенность компании - автоматизация нестандартных и сложных бизнес-процессов с применением математического аппарата для решения задач оптимального планирования, распределения ресурсов, раскроя и комплектовки материалов.</p>
+	  <p>Бизнес-линия «Продукты» разрабатывает системы оптимального планирования производства, преимущественно для предприятий ЛПК, включая лесозаготовительные предприятия, лесопильные заводы, фанерные заводы, ЦБК и производителей гофрокартона. Крупнейшими клиентами являются Ilim Timber, Mondi и многие др.</p>
+	  <p>Бизнес-линия «Услуги» предоставляет услуги по разработке ПО крупным зарубежным инжиниринговым компаниям, включая Valmet, Metso, Outotec и др.</p>
+	  <p>Бизнес-линия «Финансовые технологии» разрабатывает и тестирует различные системы для финансовых учреждений, в т.ч. Московской биржи и др.</p>
+    </div>
+    <div id="partner_inbisist">   
+	  <p>
+	    <b>Контакты:</b><br> 
+	    Директор: Марахтанов Алексей Георгиевич, выпускник ПетрГУ <img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="15px" style="margin:0px;"> <2005><br>
+	    URL: <a href="https://inbisyst.ru/" target="_blank">https://inbisyst.ru/</a><br> 
+	    Email: info@inbisyst.ru<br>
+	    Телефон: (814-2) 28-52-20
+	  </p>
+	  <p>"Интернет-бизнес-системы" - малое инновационное предприятие Петрозаводского государственного университета.</p>
+	  <p>К выполнению проектов, реализуемых нашей компанией, привлекаются специалисты и научные сотрудники ПетрГУ. При выполнении работ используются современные методы, наукоемкие технологии, методики и решения. Все это позволяет создавать высококачественные современные инновационные программные продукты для удовлетворения потребностей бизнеса.</p>
+	  <p>Мы занимаемся как внедрением типовых решений (в том числе разработкой и сопровождением корпоративных сайтов, интернет-магазинов, порталов на базе классических CMS, таких, как 1С-Битрикс и Wordpress), так и разработкой информационных систем, автоматизирующих различные бизнес-процессы, по индивидуальным заказам.</p>
+    </div>
+    <div id="partner_arcusys">   
+	   <p><b>Контакты:</b><br> 
+	    Директор: Емельянов Антон Владимирович, выпускник ПетрГУ <img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="15px" style="margin:0px;"> <br>
+	    URL: <a href="https://www.arcusys.com/" target="_blank">https://www.arcusys.com/</a><br> 
+	    Email: yulia.shamatura@arcusys.com<br>
+	    VK: <a href="https://vk.com/arcusys_official" target="_blank">https://vk.com/arcusys_official</a></p>
+	  <p>Arcusys - международная компания, специализирующаяся на цифровой трансформации обучения. Благодаря нашей платформе Valamis, мы помогаем нашим клиентам сделать цифровую трансформацию своим конкурентным преимуществом.</p>
+	  <p>Мы в Arcusys верим, что сочетание нашего опыта в сфере обучения с передовыми технологиями помогает нам предоставлять выдающиеся решения и продукты нашим клиентам.</p>
+	  <p>Arcusys - это команда, состоящая из более чем 160 квалифицированных специалистов из Финляндии, России, Германии и США.</p>
+    </div>
+    <div id="partner_infocraft">   
+          <p><b>Контакты:</b><br> 
+	    Директор: Шульгин Алексей Викторович, выпускник ПетрГУ <img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="15px" style="margin:0px;">  <2001><br>
+            URL: <a href="https://www.infocraft.ru/" target="_blank">https://www.infocraft.ru/</a><br> 
+            Email: info@infocraft.ru<br>
+            Телефон: (8142) 59-29-52</p>
+	  <p>Разработка программного обеспечения для предприятий ЖКХ - приоритетное направление деятельности компании Инфокрафт.</p>
+	  <p>Мы создаем прикладные решения на платформе «1С:Предприятие 8», программы для Microsoft Windows и онлайн-сервисы, направленные на решения профессиональных задач наших клиентов.</p>
+	  <img src="./images/1tc.jpg" align="right" height="70px"><img src="./images/1fr.jpg" align="right" height="70px">
+	  <p>Компания «Инфокрафт» является официальным партнером фирмы «1С». Имеет статусы «1С:Франчайзи» и «1С Центр разработки».</p> 
+	  <p>Статус «1С Центр разработки» подтверждает экспертный уровень компании в разработке и сопровождении тиражных решений на платформе «1С:Предприятие».</p>
+	  <p>Программные продукты компании «Инфокрафт» успешно используются во всех регионах Российской Федерации. Мы оказываем услуги по внедрению и дальнейшему сопровождению наших разработок на предприятиях заказчиков, независимо от их территориального расположения.</p>
+    </div>
+    <div id="partner_interso">   
+          <p><b>Контакты:</b><br> 
+	    Директор: Волков Константин Геннадьевич, выпускник ПетрГУ <img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="15px" style="margin:0px;">  <2002><br>
+          URL: <a href="http://interso.ru/" target="_blank">http://interso.ru/</a><br> 
+          Email: contact@interso.ru<br>
+          Телефон: +7 (8142) 33-22-11</p>
+	  <p>Мы занимаемся разработкой сайтов на базе нашего сервиса Конструктор сайтов "Нубекс" (<a href="http://nubex.ru/" target="_blank">http://nubex.ru</a>). С помощью него мы помогаем нашим клиентам
+развить свой бизнес в интернет. Работаем с 2001 года. Производим качественные и продуманные решения, и у нас довольно серьезный подход к работе,
+что позволяет профессионально расти каждому из нас.</p>
+	  <p>Мы боремся за качество наших проектов и комфортную работу внутри коллектива. Мы помогаем друг-другу расти как в техническом плане, так и в плане
+развития личности.</p>
+	  <p>Сейчас в компании трудится 15 сотрудников. В активе более 800 клиентов, половина которых из разных регионов России.
+Мы вместе формируем наш продукт и наше будущее.</p>
+    </div>
+    <div id="partner_natlex">   
+          <p><b>Контакты:</b><br> 
+	    Директор: Мышаков Юрий Валериянович<br>
+          URL: <a href="http://natlex.ru/" target="_blank">http://natlex.ru/</a><br> 
+         Email: info@natlex.ru<br>
+          Телефон: +7 (921) 228-20-17</p>
+	  <p>NatLex — это IT-компания из города Петрозаводска. Мы разрабатываем высоконагруженные веб-приложения для бизнеса. Наша команда работает над международными проектами и говорит на нескольких языках.</p>
+    </div>
+    <div id="partner_neosystems">   
+          <p><b>Контакты:</b><br> 
+	    Директор: Дураков Вячеслав Леонидович<br>
+          URL: <a href="http://neosystems.ru/" target="_blank">http://neosystems.ru/</a><br> 
+          Email: info@neosystems.ru<br>
+          Телефон: 8 (8142) 67-21-20 </p>
+	  <p>Компания "Неосистемы Северо-Запад ЛТД" работает на рынке информационных технологий более 20 лет, оказывая консалтинговые услуги по оптимизации и автоматизации бизнес-процессов предприятий. 
+	  </p>
+	  <p><b>Основные направления деятельности компании:</b></p>
+	  <ul>  
+	    <li>Создание Автоматизированных Систем Управления Предприятием (АСУП)
+	    <li>Сопровождение Автоматизированных Систем Управления Предприятием.
+	    <li>Продажа, внедрение и сопровождение стандартных решений фирмы "1С" и решений партнеров сети "1С:Франчайзи" для производственных и торговых предприятий, бюджетных организаций.
+	    <li>Разработка, продажа и внедрение собственного программного обеспечения - отраслевого для предприятий лесопромышленного комплекса и специализированного для производственных предприятий любой отрасли. 
+	    <li>Оказание услуг по управленческому, финансовому, производственному и обучающему консалтингу. 
+	    <li>Обучение пользователей и проведение курсов по типовым программам 1С и программированию на платформе "1С:Предприятие 8.3".
+	  </ul>
+	  <p>Подробную информацию о стажировках для студентов можно узнать по адресу <a href="http://trainee.neosystems.ru/" target="_blank">http://trainee.neosystems.ru/</a></p>
+    </div>
+    <div id="partner_playrix">   
+          <p><b>Контакты:</b><br> 
+          URL: <a href="http://playrix.com/" target="_blank">http://playrix.com/</a><br> 
+          Email: contact@playrix.com<br>
+          Вакансии:  <a href="http://job.playrix.com/" target="_blank">job.playrix.com</a></p>
+	  <p>Playrix является крупнейшей игровой компанией в России и входит в Топ-10 самых успешных мобильных разработчиков в мире. Playrix - создатель таких хитов, как Homescapes, Gardenscapes, Fishdom и Township, которые скачали более 250 миллионов игроков. В игры компании каждый день играют более 25 миллионов человек. Сегодня команда Playrix состоит из более чем 700 профессионалов, работающих из 19 стран и 95 городов. Офисы компании расположены в Вологде, Иваново, Калининграде, Киеве, Москве, Петрозаводске, Ростове-на-Дону, Санкт-Петербурге и Харькове. Более трети наших сотрудников работают удаленно.</p>
+    </div>
+    <div id="partner_roskvartal">   
+          <p><b>Контакты:</b><br> 
+          <p><b>Контакты:</b><br> 
+	    Директор: Шевчук Владислав Игоревич<br>
+          URL: <a href="http://roskvartal.ru/" target="_blank">http://roskvartal.ru/</a><br> 
+          Email: mail@roskvartal.ru</p>
+	  <p>С 2014 года мы помогаем управляющим организациям соблюдать лицензионные требования, автоматизируем размещение сведений в информационных системах. К нам обращаются за консультационной и юридической поддержкой. Мы берём на себя заботы управляющих организаций по внесению и обновлению информации в ГИС ЖКХ согласно Федеральному закону N 209-ФЗ. Вместе с тем гарантируем полное раскрытие информации в установленный срок в соответствии со Стандартом, утверждённым Постановлением Правительства РФ N 731, и заполнение портала Реформа ЖКХ по формам, введённым Приказом Минстроя РФ N 882/пр. Ещё одно направление деятельности РосКвартала - создание стильных и функциональных сайтов для управляющих организаций. Их качество оценено как руководством компаний, так и обычными пользователями. Наши сайты неоднократно завоёвывали высокие места в рейтинге ГЖИ за удобство использования.</p>
+    </div>
+    <div id="partner_technomedia">   
+	    <p><b>Контакты:</b><br> 
+	    Директор: Семенов Игорь Олегович, выпускник ПетрГУ <img src="http://kappa.cs.petrsu.ru/~chistyak/imit/images/petrsu-logo.png" width="15px" style="margin:0px;">  <2007><br>
+	    URL: <a href="http://sysdyn.ru" target="_blank">http://sysdyn.ru</a><br> 
+	    Email: iosemenov@gmail.ru</p>
+	      <p>Мы разрабатываем такое программное обеспечение:</p>
+	      <ul>
+		<li>Веб-приложения на платформе ASP.NET MVC
+		<li>Веб-приложения на платформе PHP
+		<li>Нативные мобильные приложения для Android
+		<li>Бизнес-приложения на платформе «1С:Предприятие 8»
+	      </ul>
+	      <p>Проводим научные исследования и разработки в таких областях:</p>
+	      <ul>
+		<li>Системная динамика
+		<li>Прикладная статистика
+		<li>Машинное обучение
+	      </ul>
+    </div>
+    <div id="partner_trinity">   
+	  <p><b>Контакты:</b><br> 
+	    Директор: Мальмберг Антон Сергеевич<br>
+	    URL: <a href="http://trinitydigital.ru/" target="_blank">http://trinitydigital.ru/</a><br> 
+	    Email: ak@trinitydigital.ru<br>
+	    VK: <a href="https://vk.com/trinity_digital" target="_blank">https://vk.com/trinity_digital</a>
+	  </p>
+	  <p>Студия мобильной разработки Trinity Digital была основана в 2013 году. За прошедшие несколько лет был реализован ряд успешных проектов, среди которых такие приложения, как: «Рецепты завтраков от Юлии Высоцкой», Chop-Chop для сети одноименных парикмахерских, Inside City Guide для путешественников и др. Студия Trinity Digital реализует весь спектр услуг по разработке приложений для платформ iOS и Android, в том числе и для носимых устройств</p>
+    </div>
+    <div id="partner_kontur">   
+          <p><b>Контакты:</b><br>
+            URL: <a href="https://kontur.ru/voidmain" target="_blank">https://kontur.ru/voidmain</a><br>
+            Email: kontur-student@kontur.ru<br>
+            Контакт: Рыбинская Е.А.
+          </p>
+          <p>СКБ Контур — один из первых разработчиков программного обеспечения в России. Компания была образована в 1988 году.</p>
+          <p>СКБ Контур разрабатывает программы для руководителей и бухгалтеров, которые помогают взаимодействовать с государством и
+          контрагентами, упростить внутренние процессы и быстрее справляться с ежедневными задачами.</p>
+          <p>Еще СКБ Контур оказывает услуги крупнейшего в России коммерческого удостоверяющего центра. Общее количество сертификатов
+          электронной подписи, выданных УЦ СКБ Контур, превышает 4 млн.</p>
+          <h2>Более 30 продуктов для бизнеса</h2>
+              <p>Продуктовая линейка компании включает программы электронного документооборота и электронной отчетности, онлайн-сервисы для
+          предпринимателей и бухгалтеров, а также сервисы для обеспечения информационной безопасности. Мы хотим, чтобы бизнес общался с
+          государством легко и без лишних рисков. <a href="https://kontur.ru/products" target="_blank">Смотреть все продукты</a>.</p>
+          </p>
+    </div>
+</div> 
+{% endblock %}

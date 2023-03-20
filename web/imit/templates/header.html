@@ -1,0 +1,241 @@
+<header class="header">
+  {% if current_user.is_authenticated %}
+     <div class="management-panel">
+     {% if current_user.has_role('editor') or current_user.has_role('admin') %}
+        <a href="/management">Управление</a> | 
+      {% endif %}
+      <a href="/logout">{{ _('Выйти') }} </a>
+    </div>
+  {% endif %}
+ 
+    <!--div id="head-top">
+        {#% if current_user.is_authenticated and current_user.has_role('admin') %#}
+            <a href="/admin">{{ _('Администрирование') }}</a> |
+        {#% endif %#}
+        {#% if current_user.is_authenticated %#}
+            <a href="#">{{ current_user.uid }}</a> |
+            <a href="/logout">{{ _('Выйти') }}</a>
+        {#% else %#}
+            <a href="/login">{{ _('Войти') }}</a>
+        {#% endif %#}
+        <!- -a href="/locale/set/ru">
+            <img src="https://lipis.github.io/flag-icon-css/flags/4x3/ru.svg" alt="ru" height="15px"/>
+        </a>
+        <a href="/locale/set/en">
+            <img src="https://lipis.github.io/flag-icon-css/flags/4x3/gb.svg" alt="en" height="15px"/>
+        </a- ->
+    </div-->
+    <div id="head-petrsu">
+        <div class="head-logo"><a href="https://petrsu.ru/">
+            <!--img width="70" src="/images/petrsu-logo.png"--></a>
+        </div>
+        <div class="head-title">
+            <a id="petrsu-label" href="https://petrsu.ru/">
+	        <!--img src="/images/petrsu-logo.png" style="height:30pt; margin-right:30px;"/-->
+                <span class="avoidwrap">Петрозаводский</span>
+                <span class="avoidwrap">государственный</span>
+                <span class="avoidwrap">университет</span>
+            </a>
+        </div>
+        <div class="head-title-short">
+            <a id="petrsu-label" href="https://petrsu.ru/">
+	      <img src="./images/petrsu-logo.png" style="height:30pt;
+							 margin-right:20px;"> 
+	      ПетрГУ</a>
+        </div>
+    </div>
+    <!--br clear="all"><br>
+    <div class="line-bot-s"></div-->
+    <div id="head-imit" style="margin-top:-10px;">
+      <a href="http://issuesofanalysis.petrsu.ru/">
+	<img id="head-image-iss" src="/images/iss-of-analysis.jpg" align="left"
+	     style="height:100px; margin-left:2%"/>
+      </a>
+      <img id="head-image-tux" src="/images/tux.svg" 
+	   alt="logo linux tux (c) Larry Ewing"
+	   style="height:100px;margin-right:2%"
+	   title="(c) Larry Ewing, Simon Budig, Garrett LeSage" align="right"/>
+      <h1 id="title"><a href="https://imit.petrsu.ru/">
+          <span class="avoidwrap">Институт математики</span>
+          <span class="avoidwrap">и информационных технологий</span></a>
+          <a style='line-height: 10px; vertical-align: bottom;' href='https://vk.com/mit.petrsu'>
+            <img src='/images/vk-logo.svg' height='25px' alt='vk'/></a>
+      </h1>
+      <h1 id="title-short"><a href="https://imit.petrsu.ru/">ИМИТ</a>
+      </h1>
+      <center style="margin-top:-10px;">
+        <img id="head-image-center" src="/images/g3217.png" 
+	     style="width:40%; min-width:100px;">
+      </center>
+        <!--table id="header-images">
+            <tr>
+                <td>
+                    <img width="230" src="/images/2-4.png"/>
+                </td>
+                <td>
+                    <img width="230" src="/images/fin-auto-1.png"/>
+                </td>
+                <td>
+                    <img width="230" src="/images/mark-pro-1.gif"/>
+                </td>
+                <td>
+                    <img width="230" src="/images/mslinux660.jpg"/>
+                </td>
+            </tr>
+        </table-->
+    </div>
+    <div class="line-bot-s"></div>
+    <ul id="menu-mobile" class="topnav" >
+        <li><a href="javascript:void(0);" onclick="imit.menu.toggleMobileMenu()"><img src="/images/cs_list.png"/></a></li>
+        <li><a href="/">Главная</a></li>
+        {% if current_user.is_authenticated and current_user.has_role('editor') %}
+          <li><a href="/draft">Черновики</a></li>
+        {% endif %}
+        <li><a href="/page/about" class="drop">Институт</a></li>
+        <li><a href="https://imit.petrsu.ru/files/2021/f_666_graphic_2021_2022.pdf">График
+            учебного процесса</a></li>
+        <li><a href="/page/cur_schedule">Расписание занятий</a></li>      
+        <li><a href="/page/grafik_peresdach">График пересдач</a></li>      
+        <li><a href="http://cs.petrsu.ru/studies/tabel_2021-2022.pdf">Табель-календарь</a></li>    
+        <li><a href="/page/exam">Отчетность студентов</a></li>
+        <li><a href="/page/exam_sch">График сдачи зачетов</a></li>
+        <li><a href="/page/defence_sch">График защиты курсовых работ</a></li>
+        <li><a href="/page/coursework_topics">Предлагаемые кафедрами темы практик НИР (курсовых работ)</a></li>
+	    <li><a href="http://www.cs.petrsu.ru/studies/kurs/vkr2016.pdf">Положение
+            о выпускных работах</a></li>
+        <li><a href="https://imit.petrsu.ru/page/kurs">Курсовые и выпускные работы</a></li>
+         <li>Бакалавриат
+	    <ul>
+		<li><a href="/page/practice">Практика</a></li>
+		<li><a href="/page/gos_bak">Итоговая государственная аттестация</a></li>
+	    </ul>
+	</li>
+        <li>Магистратура
+        <ul>
+            <li><a href="/page/mag_templates">Образцы индивидуальных планов и
+                ведомостей</a></li>
+            <li><a href="/page/areas">Направления подготовки</a></li>
+            <li><a href="/page/mag_practice_2019">Формы отчетов по практикам</a></li>
+            <li><a href="/page/gos_mag">Итоговая государственная
+                аттестация</a></li>
+        </ul>
+	</li>
+        <li>Заочное отделение
+        <ul>
+	    <li><a href="/page/extramural_sch">Расписание</a></li>
+            <li><a href="/page/areas_z">Направления подготовки</a></li>
+            <li><a href="/page/gos_z">Государственная аттестация</a></li>
+			<li><a href="/page/practice_zaoch">Практика</a></li>
+        </ul>
+	</li>
+	<li><a href="/page/abit">Абитуриентам</a></li>
+	<li><a href="/page/pr_club">Клуб программистов</a></li>
+	<li><a href="/employers">Работа в сфере ИКТ и ПО</a></li>
+    </ul>
+    <ul id="menu">
+        <li class="one"><a href="/">Главная</a></li>
+        {% if current_user.is_authenticated and current_user.has_role('editor') %}
+          <li><a href="/draft">Черновики</a></li>
+        {% endif %}
+        <li><a href="/page/about" class="drop">Институт</a><!-- Begin Home Item -->
+
+            <div class="dropdown_2columns"><!-- Begin 2 columns container -->
+
+                <div class="col_2">
+                    <a href="/page/about"><h2>История</h2></a>
+                </div>
+
+                <div class="col_2">
+                    <a href="/page/structure"><h3>Структура</h3></a>
+                </div>
+
+                <div class="col_2">
+                    <ul class="sub">
+                        <li><a href="/page/structure#dir" class="strong">Дирекция</a></li>
+                        <li><a href="/page/structure#matan">Кафедра математического анализа</a></li>
+                        <li><a href="/page/structure#pmik">Кафедра прикладной математики и кибернетики</a></li>
+                        <li><a href="/page/structure#imo">Кафедра информатики и математического обеспечения</a></li>
+                        <li><a href="/page/structure#tvad">Кафедра теории вероятностей и анализа данных</a></li>
+                        <li><a href="/page/structure#ped">Кафедра теории и методики обучения математике и
+                            информационно-коммуникационным технологиям в образовании</a></li>
+                    </ul>
+                </div>
+
+            </div><!-- End 2 columns container -->
+
+        </li><!-- End Home Item -->
+        
+        <li><a href="#" class="drop">Обучение</a><!-- Begin 4 columns Item -->
+
+            <div class="dropdown_3columns"><!-- Begin 4 columns container -->
+
+                <ul>
+                    <li style="line-height: 1.2em;"><a href="https://vk.com/doc3042910_515015038?hash=49971b1e715083f556&dl=407fdacee99c45dd5c">Правила внутреннего трудового распорядка ПетрГУ</a><br/></li>
+                    <!--li style="line-height: 1.2em;"><a href="http://cs.petrsu.ru/studies/pamjatka1kurs.pdf">Памятка 
+			первокурснику</a><br/></li-->
+                    <li style="line-height: 1.2em;"><a style="display:inline-block"href="https://imit.petrsu.ru/files/2021/f_666_graphic_2021_2022.pdf">График
+                        учебного процесса</a>  &nbsp; &nbsp [<a style="display:inline-block" href="https://imit.petrsu.ru/page/schedule_archive">Архив</a>]<br/><br/></li>
+                    <li style="line-height:1.2em;"><a href="/page/cur_schedule">Расписание занятий</a><br/></li>   
+                    <li style="line-height:1.2em;"><a href="/page/grafik_peresdach">График пересдач</a><br/></li>   
+                    <li style="line-height:1.2em;"><a href="http://cs.petrsu.ru/studies/tabel_2021-2022.pdf">Табель-календарь</a><br/></li>    
+                    <li style="line-height:1.2em;"><a href="/page/exam">Отчетность студентов</a><br/></li>
+                    <li style="line-height:1.2em;"><a href="/page/exam_sch">График сдачи зачетов</a><br/></li>
+                    <li style="line-height:1.2em;"><a href="/page/defence_sch">График защиты курсовых работ</a><br/></li>
+                    <li style="line-height: 1.2em;"><a href="/page/coursework_topics">Предлагаемые кафедрами темы практик НИР (курсовых работ)</a><br/></li>
+		            <li style="line-height: 1.2em;"><a href="http://www.cs.petrsu.ru/news/2020/imit_nti.pdf">Наименования и периоды практик 2019-2020 уч. года</a><br/></li>
+		            <li style="line-height: 1.2em;"><a href="http://www.cs.petrsu.ru/studies/kurs/vkr2017.pdf">Положение
+                        о выпускных работах</a><br/></li>
+                    <li style="line-height: 1.2em;"><a href="https://imit.petrsu.ru/page/kurs">Курсовые и выпускные работы</a><br/></li>
+                </ul>
+                <div class="col_1">
+
+                    <h3>Бакалавриат</h3>
+                    <ul>
+                        <li style="line-height:1.2em;"><a href="/page/practice">Практика</a><br/></li>
+                        <li style="line-height: 1.2em"><a href="/page/gos_bak">Итоговая государственная
+                            аттестация</a><br/></li>
+                        <li style="line-height: 1.2em"><a href="/page/adds_bak">Курсы по выбору</a><br/></li>
+                    </ul>
+                </div>
+                <div class="col_1">
+                    <h3>Магистратура</h3>
+                    <ul>
+                        <li style="line-height: 1.2em;"><a href="/page/mag_templates_2019">Образцы индивидуальных планов</a><br/></li>
+                        <li style="line-height: 1.2em;"><a href="/page/mag_practice_2019">Формы отчетов по практикам</a><br/></li>
+                        <li style="line-height: 1.2em;"><a href="/page/areas">Направления подготовки</a><br/></li>
+                        <li style="line-height: 1.2em"><a href="/page/gos_mag">Итоговая государственная
+                            аттестация</a><br/></li>
+                    </ul>
+
+                </div>
+
+                <div class="col_1">
+                    <h3>Заочное обучение</h3>
+                    <ul>
+		      <li><a href="/page/extramural_sch">Расписание</a><br/></li>
+                        <li style="line-height: 1.2em;"><a href="/page/areas_z">Направления подготовки</a><br/></li>
+                        <li style="line-height: 1.2em;"><a href="/page/gos_z">Государственная аттестация</a><br/></li>
+			            <li><a href="/page/practice_zaoch">Практика</a></li>
+                    </ul>
+
+                </div>
+            </div><!-- End 4 columns container -->
+
+        </li><!-- End 4 columns Item -->
+        
+	<li class="one"><a href="/page/abit" class="drop">Абитуриентам</a><!-- Begin 4 columns Item -->
+        </li><!-- End 4 columns Item -->
+
+	<li class="one"><a href="/page/pr_club" class="drop">Клуб программистов</a><!-- Begin 4 columns Item -->
+	
+        </li><!-- End 4 columns Item -->
+	
+	<li class="one"><a href="https://vk.com/math_imit" class="drop">Математический клуб</a><!-- Begin 4 columns Item -->
+	
+        </li><!-- End 4 columns Item -->
+	
+	<li class="one" style='padding-right:0'><a href="/employers" class="drop">Вакансии</a><!-- Begin 4 columns Item -->
+        </li><!-- End 4 columns Item -->
+
+    </ul>
+</header>

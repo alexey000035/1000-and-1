@@ -1,0 +1,13 @@
+{{ n.text|safe }}
+{% if n.docs is defined and n.docs|length > 0 %}
+    Приложения:<br/>
+    <ul>
+        {% for d in n.docs %}
+            <li><a href="{{ d.url }}">{{ d.title }}</a></li>
+        {% endfor %}
+    </ul>
+    </p>
+{% endif %}
+<p>
+    <a href="https://vk.com/wall-46264391_{{ n.id }}">Оригинал новости</a> <br/>
+</p>

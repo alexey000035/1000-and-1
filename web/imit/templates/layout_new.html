@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="keywords" content="Факультет математики и информационных технологий"/>
+    <meta name="description" content="Факультет математики и информационных технологий"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/PTSerifWeb/stylesheet.css') }}" type="text/css"
+          charset="utf-8"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imit.css') }}" media="all"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}" media="all"/>
+    <script type="text/javascript">
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.2/tinymce.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.5/jquery.bxslider.min.css"
+          media="all"/>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.5/jquery.bxslider.min.js"></script>
+    <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="utf-8"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/imit.js') }}"></script>
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+{% include "header_new.html" %}
+<div class="content">
+    <hr/>
+    {% block content %}
+    {% endblock %}
+    <br clear="all"/>
+</div>
+{% include "footer.html" %}
+</body>
+</html>

@@ -1,0 +1,11 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+    <h1>Создание пользователя с авторизацией не через LDAP</h1>
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.uid.label }} {{ form.uid() }} <br/>
+        {{ form.password.label }} {{ form.password() }} <br/>
+        <input type="submit" value="Создать"/>
+    </form>
+{% endblock %}

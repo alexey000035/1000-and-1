@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Аутентификация{% endblock %}
+
+{% block content %}
+    <h1>Аутентификация</h1>
+    {% include 'error_flash.html' %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.uid.label }} {{ form.uid() }} <br/>
+        {{ form.password.label }} {{ form.password() }} <br/>
+        <input type="submit" value="Войти"/>
+    </form>
+
+{% endblock %}

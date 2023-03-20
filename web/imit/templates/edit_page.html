@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Редактирование страницы {{ page.name }}{% endblock %}
+
+{% block content %}
+    <h1>Редактирование страницы {{ page.name }}</h1>
+    <a href="/page/instruction">Инструкция</a><br/>
+    {% include 'error_flash.html' %}
+    <br/>
+    <form method="POST" enctype="multipart/form-data">
+        {{ edit_form.csrf_token }}
+        {{ edit_form.title_ru.label }} {{ edit_form.title_ru() }} <br/>
+        {{ edit_form.text_ru.label }} {{ edit_form.text_ru() }} <br/>
+        {# { edit_form.title_en.label }} {{ edit_form.title_en() }#} <br/>
+        {# { edit_form.text_en.label }} {{ edit_form.text_en() }#} <br/>
+        {{ edit_form.make_advert.label }} {{ edit_form.make_advert(onchange =
+        "$('.advert_text_group').toggle($('#make_advert').is(':checked'));") }}
+        {{ edit_form.advert_text.label(style="display:none", class="advert_text_group") }}
+        <span class="advert_text_group" style="display: none; text-decoration: underline">
+            : На странице {{ page.title }} </span>
+        {{ edit_form.advert_text(style="display:none", class="advert_text_group") }}<br/>
+        <input type="submit" value="Сохранить"/>
+    </form>
+    <br/>
+    {% include "file_manager.html" %}
+    <script>
+        imit.News.initTinyMCE('#text_ru, #text_en', 'Текст страницы');
+        {% if page.id is defined %}
+            imit.FileManager.initFileManager({"page": {{ page.id }}});
+        {% else %}
+            imit.FileManager.initFileManager({"block": true, "block_message": "Необходимо сохранить страницу"});
+        {% endif %}
+    </script>
+
+{% endblock %}

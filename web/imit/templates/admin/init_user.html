@@ -1,0 +1,10 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+    <h1>Инициализация пользователя в базе данных</h1>
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.uid.label }} {{ form.uid() }} <br/>
+        <input type="submit" value="Инициализировать"/>
+    </form>
+{% endblock %}

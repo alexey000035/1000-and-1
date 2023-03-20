@@ -1,0 +1,33 @@
+<div id="fm">
+    <h3 id="fm_title">Работа с файлами:</h3>
+    <form id="fm_add_form" method="POST" action="/fm/add" enctype="multipart/form-data">
+        Добавление:
+        {{ add_file_form.csrf_token }}
+        {{ add_file_form.file.label }} {{ add_file_form.file() }} <br/>
+        {{ add_file_form.description.label }} {{ add_file_form.description() }} <br/>
+        {{ add_file_form.page_id() }} {{ add_file_form.post_id() }}
+        <input type="submit" value="Добавить"/>
+    </form>
+    <div id="fm_add_progress"></div>
+
+    <form id="fm_edit_form" method="POST" action="/fm/edit" style="display: none">
+        Редактирование:
+        {{ edit_file_form.csrf_token }}
+        {{ edit_file_form.file_id() }} <br/>
+        {{ edit_file_form.description.label }} {{ edit_file_form.description() }} <br/>
+        <input type="submit" value="Сохранить"/>
+    </form>
+
+    <form id="fm_remove_form" method="POST" action="/fm/remove" style="display: none">
+        Удаление:
+        {{ remove_file_form.csrf_token }}
+        {{ remove_file_form.file_id() }} <br/>
+        <input type="submit" value="Удалить"/>
+    </form>
+
+    <button id="fm_insert_link_button" style="display: none">Вставить ссылку</button>
+    <button id="fm_copy_link_button" style="display: none" data-clipboard-text="">Копировать ссылку</button>
+    <br/>
+    Доступные файлы:<br/>
+    <ul id="fm_list"></ul>
+</div>

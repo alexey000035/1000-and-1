@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="keywords" content="Факультет математики и информационных технологий"/>
+    <meta name="description" content="Факультет математики и информационных технологий"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/PTSerifWeb/stylesheet.css') }}" type="text/css"
+          charset="utf-8"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imit.css') }}" media="all"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/prettyPhoto.css') }}" media="all"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}" media="all"/>
+    <script type="text/javascript">
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.5/jquery.bxslider.min.css"
+          media="all"/>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.5/jquery.bxslider.min.js"></script>
+    <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="utf-8"></script>
+
+    <script type="text/javascript" src="{{ url_for('static',
+    filename='js/imit.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',
+    filename='js/jquery.prettyPhoto.js') }}"></script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+      (function (d, w, c) {
+      (w[c] = w[c] || []).push(function() {
+      try {
+      w.yaCounter{{config.YANDEX_COUNTER_ID}} = new Ya.Metrika({
+      id:{{config.YANDEX_COUNTER_ID}},
+      clickmap:true,
+      trackLinks:true,
+      accurateTrackBounce:true
+      });
+      } catch(e) { }
+      });
+
+      var n = d.getElementsByTagName("script")[0],
+      s = d.createElement("script"),
+      f = function () { n.parentNode.insertBefore(s, n); };
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+      if (w.opera == "[object Opera]") {
+      d.addEventListener("DOMContentLoaded", f, false);
+      } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+
+	$(function(){
+  		$("a[rel^='prettyPhoto']").prettyPhoto({
+    			overlay_gallery: false,
+    			social_tools: '',
+  		});
+	});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/{{config.YANDEX_COUNTER_ID}}"
+			style="position:absolute; left:-9999px;" alt=""
+			/></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+{% include "header.html" %}
+<div class="content">
+    <hr/>
+    {% block content %}
+    {% endblock %}
+    <br clear="all"/>
+</div>
+{% include "footer.html" %}
+</body>
+</html>

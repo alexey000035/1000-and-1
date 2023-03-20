@@ -1,0 +1,60 @@
+# English translations for IMIT.
+# Copyright (C) 2016 PetrSU
+# This file is distributed under the same license as the IMIT project.
+# ANTON ANDREEV <andreev@cs.petrsu.ru>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: INIT 0.1\n"
+"Report-Msgid-Bugs-To: <andreev@cs.petrsu.ru>\n"
+"POT-Creation-Date: 2016-10-03 21:08+0300\n"
+"PO-Revision-Date: 2016-10-01 10:43+0300\n"
+"Last-Translator: ANTON ANDREEV <andreev@cs.petrsu.ru>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: templates/header.html:5
+msgid "Выйти"
+msgstr "Logout"
+
+#: templates/header.html:7
+msgid "Войти"
+msgstr "Login"
+
+#: templates/header.html:38
+msgid "Главная"
+msgstr "Main"
+
+#: templates/header.html:39
+msgid "Об институте"
+msgstr "About"
+
+#: templates/header.html:40
+msgid "Структура"
+msgstr "Structure"
+
+#: templates/header.html:41
+msgid "Обучение"
+msgstr "Study"
+
+#: templates/header.html:42
+msgid "Наука"
+msgstr "Science"
+
+#: templates/header.html:43
+msgid "Общество"
+msgstr "Society"
+
+#: templates/header.html:44
+msgid "Поступление"
+msgstr "Admission"
+
+#: templates/page.html:12
+msgid "Дата обновления"
+msgstr "Last updated"
+

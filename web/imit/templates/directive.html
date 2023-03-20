@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Распоряжение о назначении тем ВКР{% endblock %}
+
+{% block content %}
+    <h1>Распоряжение о назначении тем ВКР</h1>
+    {% include 'error_flash.html' %}
+    <form method="POST" action="https://kurs.cs.petrsu.ru/query/directive"
+    target="_blank">
+        <label for="inp_year">Год</label>
+	<select id="inp_year" name="years">
+	  {% for y in range(2012, cur_year+1) %}
+	  <option value="{{y}}">{{y}}</option>
+	  {% endfor %}
+	</select>
+	<br/>
+	<label for="inp_department">Кафедра</label>
+	<select id="inp_department" name="department">
+	  <option value="ИМО">ИМО</option>
+	  <option value="ПМиК">ПМиК</option>
+	  <option value="ТМОМИ">ТМОМИ</option>
+	  <option value="МА">МА</option>
+	  <option value="ТВиАД">ТВиАД</option>
+	  <option value="ГиТ">ГиТ</option>
+	</select>
+	<br/>
+	<label for="inp_years">Курс</label>
+	<select id="inp_years" name="courses">
+	  <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	  <option value="6">6</option>
+	</select>
+	<br/>
+        <input type="submit" value="Получить"/>
+    </form>
+
+{% endblock %}

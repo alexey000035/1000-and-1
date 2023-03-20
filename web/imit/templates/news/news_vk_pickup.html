@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}Добавление новостей из ВКонтакте{% endblock %}
+
+{% block content %}
+    <h1 class="title">Добавление новостей из ВКонтакте</h1>
+
+    <h2>Последние {{ vk_posts|length }} новостей:</h2>
+
+    {% if vk_posts|length == 0 %}
+        <p>Новостей не найдено</p>
+    {% endif %}
+    {% for n in vk_posts %}
+        <div>
+            <div><b>Заголовок:</b> {{ n.title }}</div>
+            <div><b>Дата:</b> {{ n.date.strftime('%d.%m.%Y') }}</div>
+            <div><b>Текст:</b> <br/>
+                {% include "news/news_vk_pickup_item.html" %}
+            </div>
+            <p><a href="/news/add_vk/{{ n.id }}"><b><i>Добавить</i></b></a></p>
+        </div>
+        <hr/>
+        <br/>
+    {% endfor %}
+
+{% endblock %}
