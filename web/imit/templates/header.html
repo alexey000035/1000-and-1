@@ -89,7 +89,7 @@
         <li><a href="javascript:void(0);" onclick="imit.menu.toggleMobileMenu()"><img src="/images/cs_list.png"/></a></li>
         <li><a href="/">Главная</a></li>
         {% if current_user.is_authenticated and current_user.has_role('editor') %}
-          <li><a href="/draft">Черновики</a></li>
+          <li><a href="/drafts">Черновики</a></li>
         {% endif %}
         <li><a href="/page/about" class="drop">Институт</a></li>
         <li><a href="https://imit.petrsu.ru/files/2021/f_666_graphic_2021_2022.pdf">График
@@ -135,7 +135,7 @@
     <ul id="menu">
         <li class="one"><a href="/">Главная</a></li>
         {% if current_user.is_authenticated and current_user.has_role('editor') %}
-          <li><a href="/draft">Черновики</a></li>
+          <li><a href="/drafts">Черновики</a></li>
         {% endif %}
         <li><a href="/page/about" class="drop">Институт</a><!-- Begin Home Item -->
 

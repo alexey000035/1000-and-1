@@ -165,7 +165,11 @@
     </p>
     <p>
       <a href="#" onClick="$('.itemp').removeClass('line'); return false;">плитки</a> / 
-      <a href="#" onClick="$('.itemp').addClass('line'); return false;">таблица</a></p>
+      <a href="#" onClick="$('.itemp').addClass('line'); return false;">таблица</a>
+      {% if current_user.is_authenticated and current_user.has_role('editor') %}
+         | <a href="/employers/edit">Редактировать информацию о партнерах</a> | <a href="/employers/add">Добавить информацию о партнерах</a>
+      {% endif %} 
+      </p>
     <br clear="all">
     <div class="itemp">
       <div class="image">

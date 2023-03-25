@@ -1,0 +1,13 @@
+<h1 class="title">Черновики новостей</h1>
+<a href="/news/add">Добавить черновик новости</a>
+{% if full %}
+    <p>Года:
+        {% for y in years %}
+            {% if y == cur_year and year_selected %}
+                <b>{{ y }}</b>
+            {% else %}
+                <a href="/drafts?year={{ y }}">{{ y }}</a>
+            {% endif %}
+        {% endfor %}
+    </p>
+{% endif %}

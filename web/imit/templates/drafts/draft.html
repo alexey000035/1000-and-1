@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Черновики{% endblock %}
+
+
+
+{% block content %}
+<select name="drafts" id="drafts">
+  <option value="news">Новости</option>
+  <option value="advert">Объявления</option>
+  <option value="suggestion">Предложенные новости</option>
+</select>
+
+  {% include "drafts/draft_news.html" %}
+{% endblock %}
