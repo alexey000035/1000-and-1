@@ -13,6 +13,7 @@ web/build/
 web/dist/
 web/config/
 web/logs/
+web/migrations/
 
 *.sw*
 *~
@@ -20,3 +21,4 @@ web/imit/__init__.pyc
 
 web/imit/static/files
 web/env
+
