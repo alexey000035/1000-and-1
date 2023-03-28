@@ -67,6 +67,7 @@ QLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}/{}".format(MYSQL_USER, MYSQL_
 ```
 
 10. Задать путь до конфигурационного файла в переменной IMIT_CONFIG:
+
 linux:
 ```
 export IMIT_CONFIG=/path/to/config/imit_config.py
@@ -77,6 +78,7 @@ set IMIT_CONFIG=/path/to/config/imit_config.py
 $env:IMIT_CONFIG = "/path/to/config/imit_config.py"
 ```
 11. Выполнить миграции базы данных. Для этого экспортируем переменную FLASK_APP
+
 linux:
 ```
 export FLASK_APP=imit/__init__.py
