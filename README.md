@@ -24,11 +24,15 @@ python3 -m venv env
 ```
 
 5. Активировать среду:
+
+
 linux:
 ```
 source env/bin/activate
 ```
 windows:
+
+
 ```
 .\env\Scripts\activate
 ```
@@ -44,10 +48,12 @@ cd  imit
 ```
 
 8. Создать конфигурационный файл
+
 linux:
 ```
 touch imit_config.py
 ```
+
 windows:
 ```
 ""> newfile
