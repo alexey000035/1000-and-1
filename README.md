@@ -113,3 +113,58 @@ windows:
 python runserver.py
 ```
 
+## Настройка сервер (linux)
+
+1. Установить необходимые пакеты
+```
+apt-get install uwsgi nginx uwsgi-plugin-python3
+```
+
+2. Выполняем миграции для базы данных (см. пункт для запуска сервера для разработки).
+
+3. Настроить uwsgi в файле /etc/uwsgi/apps-available/imit.ini Пример настройки:
+```
+[uwsgi]
+appname = imit
+base = /srv/www/imit
+plugin = python3
+socket = /var/run/%(appname).sock
+chmod-socket = 600
+chown-socket = www-data:www-data
+threads = 40
+master = 1
+autoload = 1
+env = IMIT_CONFIG=%(base)/imit/imit_config.py
+module = %(appname):app
+chdir = %(base)/app
+logto = /srv/www/imit/log/imit-uwsgi.log
+#logto = /var/log/uwsgi/%n.log
+virtualenv = env
+uid=imit
+gid=www
+```
+
+4. Настроить nginx в файле /etc/nginx/sites-available/imit.conf Пример настройки:
+```
+server {
+        listen 80;
+        server_name XX.XX.XX.XX;
+        #rewrite ^ https://imit.petrsu.ru/$request_uri;
+        access_log  /srv/www/imit/log/imit.access.log;
+
+	location = /favicon.ico { access_log off; log_not_found off; }
+        root /srv/www/imit/app/imit/static;
+
+        client_max_body_size 32m;
+
+        location / {
+                try_files $uri @imit;
+        }
+
+        location @imit {
+            include uwsgi_params;
+            uwsgi_modifier1 30;
+            uwsgi_pass unix:/var/run/imit.sock;
+        }
+}
+```
