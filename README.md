@@ -56,7 +56,7 @@ touch imit_config.py
 
 windows:
 ```
-""> newfile
+"">  imit_config.py
 ```
 
 9. Заполнить конфигурационный файл. Пример содержимого файла настроек:
