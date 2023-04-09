@@ -13,7 +13,8 @@ web/build/
 web/dist/
 web/config/
 web/logs/
-web/migrations/
+web/migrations/__pycache__
+web/migrations/versions/__pycache__
 
 *.sw*
 *~
@@ -22,3 +23,6 @@ web/imit/__init__.pyc
 web/imit/static/files
 web/env
 
+
+imit/logs/
+web/imit/controllers/__pycache__
