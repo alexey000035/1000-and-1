@@ -19,10 +19,15 @@ apt-get install python3-venv
 ```
 
 4. Создать виртуальную среду:
+linux:
 ```
 python3 -m venv env
 ```
 
+windows:
+```
+python -m venv env
+```
 5. Активировать среду:
 
 
@@ -37,10 +42,18 @@ windows:
 .\env\Scripts\activate
 ```
 6. Установить зависимости из requirements.txt
+
+linux:
 ```
 pip3 install -r requirements.txt
 ```
 
+
+windows:
+
+```
+pip install -r requirements.txt
+```
 7. Перейти на уровень выше и зайти в папку imit:
 ```
 cd ..
@@ -56,7 +69,7 @@ touch imit_config.py
 
 windows:
 ```
-"">  imit_config.py
+"" >  imit_config.py
 ```
 
 9. Заполнить конфигурационный файл. Пример содержимого файла настроек:
