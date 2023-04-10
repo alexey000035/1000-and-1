@@ -1,0 +1,69 @@
+<h1 class="title">Новости и объявления</h1>
+
+
+<hr/>
+
+{% for post in posts %}
+    <div class="news">
+        <b>{{ post.date_created.strftime('%d.%m.%Y') }}</b>
+        &nbsp;
+        {% if post.is_advert %}
+            <span>На странице <a href="/page/{{ post.advert_for.name }}">
+                {{ post.advert_for.title }}</a> {{ post.title }}</span>
+        {% else %}
+	    {% if (post.title.strip()) %}
+            <a href='/news/{{ post.id }}'><span class="title ">
+		{% if post.is_danger %}
+		    <span class="title danger"><b>
+		{% endif %}
+		    {{ post.title }}
+		{% if post.is_danger %}
+		    </b></span>
+		{% endif %}
+	    </span></a>
+	    {% else %}
+		{% if post.short_text %}
+		    {{ post.short_text.replace('<p>', '').replace('</p>', '')|safe }}
+		{% endif %}
+	    {% endif %}
+        {% endif %}
+        <br/>
+        <div class="post-content">
+            {% if post.has_cover_image %}
+                <div style="float:left; margin-right: 10px;">
+		    <a href="/files/covers/{{ post.cover_image }}" rel="prettyPhoto[{{ post.id}}]">
+                    <img src="/files/covers/ci_{{ post.id }}.png" alt=""
+                         full-cover-image="/files/covers/{{ post.cover_image }}"
+                         height="75"/> </a><br/>
+                </div>
+            {% endif %}
+	    {% if (post.title.strip()) %}
+		{% if post.short_text %}
+		    <div class="news-text">{{ post.short_text|safe }}</div>
+		{% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div style="clear: left; height: 0.5em;"></div>
+    <div>
+            {% if current_user.is_authenticated and current_user.has_role('editor') %}
+                <p>
+                    <!--a href="/news/{{ post.id }}">Подробнее</a-->
+                    <a href="/news/{{ post.id }}/edit">Редактировать</a> |
+                    <a href="/news/{{ post.id }}/delete">Удалить</a>
+                </p>
+            {% endif %}
+    </div>
+{% endfor %}
+<hr/>
+{% if years is defined %}
+    <p>Года:
+        {% for y in years %}
+            {% if y == cur_year and year_selected %}
+                <b>{{ y }}</b>
+            {% else %}
+                <a href="/news/draft?year={{ y }}">{{ y }}</a>
+            {% endif %}
+        {% endfor %}
+    </p>
+{% endif %}
