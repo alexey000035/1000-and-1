@@ -114,7 +114,62 @@ class Post(db.Model):
     def has_cover_image(self):
         return self.cover_image is not None
 
+class tblDraftPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(256))
+    full_text = db.Column(db.Text())
+    date_created = db.Column(db.DateTime())
+    cover_image = db.Column(db.String(512))
+    
 
+    def __init__(self, date=None):
+        if date is None:
+            self.date_created = datetime.now()  # TODO: check for timezone
+
+    @property
+    def short_text(self):
+        html = ""
+        if self.full_text:
+            html = str(BeautifulSoup(self.full_text, 'html.parser').p)
+            if not html:
+                html = str(BeautifulSoup(self.full_text, 'html.parser').div)
+        if html:
+            if html.replace(" ", "").replace(" ","") == "<p></p>":
+                html = ""
+        return html
+
+    @property
+    def has_cover_image(self):
+        return self.cover_image is not None
+
+
+class tblSugPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(256))
+    full_text = db.Column(db.Text())
+    date_created = db.Column(db.DateTime())
+    cover_image = db.Column(db.String(512))
+    
+    def __init__(self, date=None):
+        if date is None:
+            self.date_created = datetime.now()  # TODO: check for timezone
+
+    @property
+    def short_text(self):
+        html = ""
+        if self.full_text:
+            html = str(BeautifulSoup(self.full_text, 'html.parser').p)
+            if not html:
+                html = str(BeautifulSoup(self.full_text, 'html.parser').div)
+        if html:
+            if html.replace(" ", "").replace(" ","") == "<p></p>":
+                html = ""
+        return html
+
+    @property
+    def has_cover_image(self):
+        return self.cover_image is not None
+    
 class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(256))
