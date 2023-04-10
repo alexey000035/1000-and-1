@@ -114,7 +114,7 @@ class Post(db.Model):
     def has_cover_image(self):
         return self.cover_image is not None
 
-class tblDraftPost(db.Model):
+class DraftPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256))
     full_text = db.Column(db.Text())
@@ -143,7 +143,7 @@ class tblDraftPost(db.Model):
         return self.cover_image is not None
 
 
-class tblSugPost(db.Model):
+class SugPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256))
     full_text = db.Column(db.Text())

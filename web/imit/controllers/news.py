@@ -91,11 +91,25 @@ def add_news():
     return render_template("news/add_news.html", add_form=add_form, add_file_form=forms.FileForm(),
                            edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
 
+
 @app.route('/news/draft')
 # @role_required('editor')
 def draft_news():
-    add_form = forms.NewsForm()
-    return render_template("drafts/draft_news.html",add_form=add_form,)
+    try:
+        year = int(request.args.get("year", datetime.now().year))
+        end_year = datetime.strptime(str(year + 1), "%Y")
+        year = datetime.strptime(str(year), "%Y")
+        year_selected = True
+    except ValueError:
+        year = datetime.strptime("2016", "%Y")
+        end_year = datetime.now()
+        year_selected = False
+
+    years = range(2016, datetime.now().year + 1)
+    pages = models.DraftPost.query.filter(models.DraftPost.date_created.between(year, end_year)) \
+    .order_by(desc(models.DraftPost.date_created))
+    full = ["data"]
+    return render_template("drafts/draft_news.html", full=True, posts=pages, cur_year=year.year, years=years, year_selected=year_selected)
 
 @app.route('/news/<nid>/edit', methods=('GET', 'POST'))
 # @role_required('editor')
