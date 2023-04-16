@@ -7,9 +7,6 @@ import logging, logging.handlers
 import os.path
 from flask_babel import Babel
 
-from dotenv import load_dotenv
-load_dotenv()
-
 app = Flask(__name__, static_url_path="")
 app.config.from_object('imit.config')
 if os.environ.get('IMIT_CONFIG') is not None:
@@ -39,5 +36,7 @@ if not app.debug:
 import imit.models
 import imit.controllers.main
 import imit.controllers.admin
+import imit.controllers.drafts
+import imit.controllers.menu
 import imit.controllers.news
 import imit.controllers.faq
