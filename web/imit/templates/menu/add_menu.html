@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}Добавление пункта меню{% endblock %}
+
+{% block content %}
+    <form method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+        {{ add_form.csrf_token }}
+        {{ add_form.name.label }} {{ add_form.name() }} <br/>
+        {{ add_form.link.label }} {{ add_form.link() }} <br/>
+        {{ add_form.is_list.label }} {{ add_form.is_list() }} <br/>
+        <input type="submit" value="Сохранить"/>
+    </form>
+{% endblock %}
