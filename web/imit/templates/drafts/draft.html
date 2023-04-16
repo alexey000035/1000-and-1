@@ -4,11 +4,25 @@
 
 
 {% block content %}
-<select name="drafts" id="drafts">
-  <option value="news">Новости</option>
-  <option value="advert">Объявления</option>
-  <option value="suggestion">Предложенные новости</option>
-</select>
-
-  {% include "drafts/draft_news.html" %}
+<a href="/drafts/drafts_news">Черновики новостей</a> | 
+<a href="/drafts/drafts_ads">Черновики объявлений</a> | 
+<a href="/drafts/responderse">Предложенные новости</a>
+<hr />
+{% for draft_post in draft_posts %}
+    <div class="draft_post">
+    <b>{{ draft_post.data_created.strftime('%d.%m.%Y') }}</b>
+	    {% if (draft_post.title.strip()) %}
+		      
+		      <a href='/drafts/{{ draft_post.id }}'><span class="title ">
+		      {{ draft_post.title }}
+		      </span></a>
+        {% endif %}
+    </div>
+    <div>
+                <p>
+                    <a href="/drafts/{{ draft_post.id }}/edit">Редактировать</a> |
+                    <a href="/drafts/{{ draft_post.id }}/delete">Удалить</a>
+                </p>
+    </div>
+{% endfor %}
 {% endblock %}
