@@ -34,7 +34,7 @@ def news_full_text_page(nid):
 
 
 @app.route('/news/add_vk')
-# @role_required('editor')
+@role_required('editor')
 def add_news_vk_list():
     j = utils.get_vk_wall_posts("-46264391", 15)
     vk_posts = [utils.convert_vk_post(p) for p in j]
@@ -42,7 +42,7 @@ def add_news_vk_list():
 
 
 @app.route('/news/add_vk/<pid>')
-# @role_required('editor')
+@role_required('editor')
 def add_news_vk(pid):
     edit_form = forms.NewsForm()
     j = utils.get_vk_wall_post(pid, "-46264391")
@@ -61,7 +61,7 @@ def add_news_vk(pid):
 
 
 @app.route('/news/add', methods=('GET', 'POST'))
-# @role_required('editor')
+@role_required('editor')
 def add_news():
     add_form = forms.NewsForm()
     if request.method == 'POST':
@@ -92,27 +92,8 @@ def add_news():
                            edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
 
 
-@app.route('/news/draft')
-# @role_required('editor')
-def draft_news():
-    try:
-        year = int(request.args.get("year", datetime.now().year))
-        end_year = datetime.strptime(str(year + 1), "%Y")
-        year = datetime.strptime(str(year), "%Y")
-        year_selected = True
-    except ValueError:
-        year = datetime.strptime("2016", "%Y")
-        end_year = datetime.now()
-        year_selected = False
-
-    years = range(2016, datetime.now().year + 1)
-    pages = models.DraftPost.query.filter(models.DraftPost.date_created.between(year, end_year)) \
-    .order_by(desc(models.DraftPost.date_created))
-    full = ["data"]
-    return render_template("drafts/draft_news.html", full=True, posts=pages, cur_year=year.year, years=years, year_selected=year_selected)
-
 @app.route('/news/<nid>/edit', methods=('GET', 'POST'))
-# @role_required('editor')
+@role_required('editor')
 def edit_news(nid):
     edit_form = forms.NewsForm()
     post = models.Post.query.get_or_404(nid)
@@ -147,11 +128,12 @@ def edit_news(nid):
     # Passing post data to form fields for editing        
     edit_form.title.data = post.title
     edit_form.full_text.data = post.full_text
-    return render_template("news/news_drafts.html")
+    return render_template("news/add_news.html", add_form=edit_form, post=post, add_file_form=forms.FileForm(),
+                           edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
 
 
 @app.route('/news/<nid>/delete')
-#@role_required('editor')
+@role_required('editor')
 def delete_news(nid):
     post = models.Post.query.get_or_404(nid)
     app.logger.debug("News with id %s is being deleted", nid)

@@ -35,11 +35,6 @@ def test_page():
 def employers_page():
     return render_template('employers.html', active_page="about")
 
-@app.route('/draft')
-@role_required('editor')
-def draft_page():
-    return render_template('draft.html', active_page="about")
-
 @app.route('/employers_test')
 def employers_test_page():
     return render_template('employers_test.html', active_page="about")
