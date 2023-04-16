@@ -7,6 +7,9 @@ import logging, logging.handlers
 import os.path
 from flask_babel import Babel
 
+from dotenv import load_dotenv
+load_dotenv()
+
 app = Flask(__name__, static_url_path="")
 app.config.from_object('imit.config')
 if os.environ.get('IMIT_CONFIG') is not None:
