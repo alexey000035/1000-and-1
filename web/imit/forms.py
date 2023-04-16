@@ -28,6 +28,17 @@ class NewsForm(FlaskForm):
     date = StringField("Дата", [validators.Optional(),
                                 validators.Regexp(r"^\d\d\.\d\d\.\d\d\d\d$")])
 
+class MenuForm(FlaskForm):
+    link = StringField("Ссылка",
+                        [validators.InputRequired(),
+                         validators.Length(min=1, max=100,
+                                           message="Необходим текст не более 100 символов и не менее 1")])
+    name = StringField("Заголовок",
+                        [validators.InputRequired(),
+                         validators.Length(min=3, max=100,
+                                           message="Необходим текст не более 100 символов и не менее 1")])
+    is_list = BooleanField("Есть ли подпункты", default=False)
+
 
 class InitUserForm(FlaskForm):
     uid = StringField("Имя пользователя",
