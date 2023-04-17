@@ -273,3 +273,7 @@ def set_lang_cookie(locale):
 @app.before_request
 def prepare():
     g.locale = get_locale()  # FIXME: make something to not calculate it every time
+
+@app.errorhandler(404)
+def pageNotFount(error):
+    return render_template('page404.html'),404

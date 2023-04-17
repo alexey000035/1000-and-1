@@ -68,7 +68,7 @@ def add_news():
         if add_form.validate_on_submit():
             post = models.Post()
             add_form.populate_obj(post)
-            if add_form.date.data is not None and add_form.date.data != "":
+            if add_form.date.data:
                 post.date_created = datetime.strptime(add_form.date.data, "%d.%m.%Y")
             db.session.add(post)
             db.session.commit()
@@ -80,16 +80,23 @@ def add_news():
                     if file is not None and not file.filename == '':
                         _save_cover_image(add_form.cropped_cover_image_data.data, file, post)
                     else:
+                        print("Cropped image is set but full image is not")
                         app.logger.warning("Cropped image is set but full image is not")
                 else:
+                    print("Cropped image is set but full image is not")
                     app.logger.warning("Cropped image is set but full image is not")
 
-            return redirect('/news/{}'.format(post.id))
+            return redirect(f'/news/{post.id}')
         else:
-            app.logger.warning("Invalid NewsForm input: {}".format(get_form_errors(add_form)))
+            app.logger.warning(f"Invalid NewsForm input: {get_form_errors(add_form)}")
             flash_errors(add_form)
-    return render_template("news/add_news.html", add_form=add_form, add_file_form=forms.FileForm(),
-                           edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
+
+    return render_template("news/add_news.html",
+                           add_form=add_form,
+                           add_file_form=forms.FileForm(),
+                           edit_file_form=forms.FileEditForm(),
+                           remove_file_form=forms.FileRemoveForm()
+                           )
 
 
 @app.route('/news/<nid>/edit', methods=('GET', 'POST'))

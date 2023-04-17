@@ -6,7 +6,7 @@
     {% include 'error_flash.html' %}
     <a href="/page/instruction">Инструкция</a><br/>
     <br/>
-    <form id = 'jopa' method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+    <form  method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
         {{ add_form.csrf_token }}
         {{ add_form.title.label }} {{ add_form.title() }} <br/>
         {{ add_form.date(style="display:none") }}<br/>
@@ -39,11 +39,11 @@
             <br/>
         </div>
         {{ add_form.full_text.label }} {{ add_form.full_text() }} <br/>
-        <!-- <input type="submit" value="Опубликовать"/>
-        <input type="submit" value="Сохранить как черновик"/> -->
+        <input type="submit" value="Опубликовать"/>
+        <input type="submit" value="Сохранить как черновик"/>
     </form>
-    <button  onclick='alert(document.forms["jopa"].elements["jopa"].value); return false'>Опубликовать</button>
-    <button >Сохранить как черновик</button>
+    <!-- <button  onclick='alert("тык"); return false'>Опубликовать</button>
+    <button >Сохранить как черновик</button> -->
     <br/>
     {% include "file_manager.html" %}
     <script>
