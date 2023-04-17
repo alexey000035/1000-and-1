@@ -10,7 +10,7 @@ git clone https://github.com/alexey000035/1000-and-1
 
 ## 2. Перейти в директорию проекта:
 ```
-cd web
+cd 1000-and-1/web
 ```
 
 ## 3. Установить пакеты(Для linux):
