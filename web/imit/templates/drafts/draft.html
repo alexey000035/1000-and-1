@@ -10,7 +10,7 @@
 <hr />
 {% for draft_post in draft_posts %}
     <div class="draft_post">
-    <b>{{ draft_post.data_created.strftime('%d.%m.%Y') }}</b>
+
 	    {% if (draft_post.title.strip()) %}
 		      
 		      <a href='/drafts/{{ draft_post.id }}'><span class="title ">

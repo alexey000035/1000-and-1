@@ -7,7 +7,7 @@ import os
 from sqlalchemy import desc
 import base64
 from datetime import datetime
-
+import sys
 
 @app.route('/news')
 def news_page():
@@ -97,6 +97,33 @@ def add_news():
                            edit_file_form=forms.FileEditForm(),
                            remove_file_form=forms.FileRemoveForm()
                            )
+
+@app.route('/news/add/save', methods=('GET', 'POST'))
+@role_required('editor')
+def add_news_save():
+    add_form = forms.NewsForm()
+    if request.method == 'POST':
+        if add_form.validate_on_submit():
+            post = models.Draft_post()
+            add_form.populate_obj(post)
+
+            db.session.add(post)
+            db.session.commit()
+
+            # Save cover image if any.
+            if add_form.cropped_cover_image_data.data:
+                if 'full_cover_image' in request.files:
+                    file = first(request.files.getlist("full_cover_image"))
+                    if file is not None and not file.filename == '':
+                        _save_cover_image(add_form.cropped_cover_image_data.data, file, post)
+                    else:
+                        print("Cropped image is set but full image is not")
+                        app.logger.warning("Cropped image is set but full image is not")
+                else:
+                    print("Cropped image is set but full image is not")
+                    app.logger.warning("Cropped image is set but full image is not")
+
+    return redirect(f'/')
 
 
 @app.route('/news/<nid>/edit', methods=('GET', 'POST'))

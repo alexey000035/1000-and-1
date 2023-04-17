@@ -89,8 +89,24 @@ class Draft_post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text())
     full_text = db.Column(db.Text())
-    data_created = db.Column(db.DateTime())
     cover_image = db.Column(db.Text())
+
+    @property
+    def short_text(self):
+        # fix: Если нет тегов => BeautifulSoup-> None
+        # но функция str преобразовывала None -> "None"
+        html = ""
+        if self.full_text:
+            html = BeautifulSoup(self.full_text, 'html.parser').p
+            if not html:
+                html = BeautifulSoup(self.full_text, 'html.parser').div
+            if not html:
+                html = BeautifulSoup(self.full_text, 'html.parser')
+        if html:
+            if str(html).replace(" ", "").replace(" ", "") == "<p></p>":
+                html = ""
+
+        return html  # self.full_text
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -118,15 +134,20 @@ class Post(db.Model):
 
     @property
     def short_text(self):
+        # fix: Если нет тегов => BeautifulSoup-> None
+        # но функция str преобразовывала None -> "None"
         html = ""
         if self.full_text:
-            html = str(BeautifulSoup(self.full_text, 'html.parser').p)
+            html = BeautifulSoup(self.full_text, 'html.parser').p
             if not html:
-                html = str(BeautifulSoup(self.full_text, 'html.parser').div)
+                html = BeautifulSoup(self.full_text, 'html.parser').div
+            if not html:
+                html = BeautifulSoup(self.full_text, 'html.parser')
         if html:
-            if html.replace(" ", "").replace(" ","") == "<p></p>":
+            if str(html).replace(" ", "").replace(" ","") == "<p></p>":
                 html = ""
-        return html
+
+        return html#self.full_text
 
     @property
     def has_cover_image(self):

@@ -35,21 +35,22 @@
             <span>На странице <a href="/page/{{ post.advert_for.name }}">
                 {{ post.advert_for.title }}</a> {{ post.title }}</span>
         {% else %}
-	    {% if (post.title.strip()) %}
-            <a href='/news/{{ post.id }}'><span class="title ">
-		{% if post.is_danger %}
-		    <span class="title danger"><b>
-		{% endif %}
-		    {{ post.title }}
-		{% if post.is_danger %}
-		    </b></span>
-		{% endif %}
-	    </span></a>
-	    {% else %}
-		{% if post.short_text %}
-		    {{ post.short_text.replace('<p>', '').replace('</p>', '')|safe }}
-		{% endif %}
-	    {% endif %}
+            {% if (post.title.strip()) %}
+                <a href='/news/{{ post.id }}'><span class="title ">
+                {% if post.is_danger %}
+                    <span class="title danger"><b>
+                {% endif %}
+                {{ post.title }}
+                {% if post.is_danger %}
+                    </b></span>
+                {% endif %}
+                </span></a>
+            {% else %}
+                {% if post.short_text %}
+                    {{ post.short_text.replace('<p>', '').replace('</p>', '')|safe }}
+                {% endif %}
+
+            {% endif %}
         {% endif %}
         <br/>
         <div class="post-content">
@@ -62,10 +63,12 @@
                 </div>
             {% endif %}
 	    {% if (post.title.strip()) %}
-		{% if post.short_text %}
-		    <div class="news-text">{{ post.short_text|safe }}</div>
-		{% endif %}
+            {% if post.short_text %}
+
+                <div class="news-text">{{ post.short_text | safe }} </div>
+
             {% endif %}
+        {% endif %}
         </div>
     </div>
     <div style="clear: left; height: 0.5em;"></div>
