@@ -86,7 +86,7 @@ class Menu_subitems(db.Model):
     item = db.Column(db.Integer)
 
 class Draft_post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.Text())
     full_text = db.Column(db.Text())
     cover_image = db.Column(db.Text())
@@ -107,6 +107,14 @@ class Draft_post(db.Model):
                 html = ""
 
         return html  # self.full_text
+    def toPost(self):
+        post = Post()
+
+        post.title = self.title
+        post.full_text = self.full_text
+        post.cover_image = self.cover_image
+        post.is_danger = False
+        return post
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

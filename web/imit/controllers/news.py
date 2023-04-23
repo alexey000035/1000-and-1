@@ -140,6 +140,48 @@ def delete_draft_news(nid):
     db.session.commit()
     return redirect('/drafts')
 
+
+@app.route('/drafts/<nid>/edit', methods=('GET', 'POST'))
+@role_required('editor')
+def edit_draft_news(nid):
+    edit_form = forms.NewsForm()
+    post = models.Draft_post.query.get_or_404(nid).toPost()
+    if request.method == 'POST':
+        if edit_form.validate_on_submit():
+            app.logger.debug("News with id %s is being edited", nid)
+            edit_form.populate_obj(post)
+            if edit_form.date.data is not None and edit_form.date.data != "":
+                post.date_created = datetime.strptime(edit_form.date.data, "%d.%m.%Y")
+            db.session.add(post)
+            db.session.commit()
+
+            # Delete cover image if any
+            if edit_form.delete_cover_image.data and post.has_cover_image:
+                _remove_cover_image(post)
+            # Save cover image if any.
+            if edit_form.cropped_cover_image_data.data:
+                if post.has_cover_image:
+                    _remove_cover_image(post)
+                if 'full_cover_image' in request.files:
+                    file = first(request.files.getlist("full_cover_image"))
+                    if file is not None and not file.filename == '':
+                        _save_cover_image(edit_form.cropped_cover_image_data.data, file, post)
+                    else:
+                        app.logger.warning("Cropped image is set but full image is not")
+                else:
+                    app.logger.warning("Cropped image is set but full image is not")
+            return redirect('/news')
+        else:
+            app.logger.debug("Invalid NewsForm input: {}".format(get_form_errors(edit_form)))
+            app.logger.debug("{}".format(first(request.files.getlist("full_cover_image"))))
+            flash_errors(edit_form)
+    # Passing post data to form fields for editing
+    edit_form.title.data = post.title
+    edit_form.full_text.data = post.full_text
+    return render_template("news/add_news.html", add_form=edit_form, post=post, add_file_form=forms.FileForm(),
+                           edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
+
+
 @app.route('/news/<nid>/edit', methods=('GET', 'POST'))
 @role_required('editor')
 def edit_news(nid):
