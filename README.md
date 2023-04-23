@@ -76,7 +76,7 @@ windows:
 "" >  imit_config.py
 ```
 
-## 9. Заполнить конфигурационный файл. Пример содержимого файла настроек:
+## 9. Заполнить конфигурационный файл (MYSQL_USER,MYSQL_PASSWORD). Пример содержимого файла настроек:
 ```
 DEBUG = False
 TESTING = False
@@ -89,47 +89,28 @@ QLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}/{}".format(MYSQL_USER, MYSQL_
 ```
 
 
-## 10. Задать путь до конфигурационного файла в переменной IMIT_CONFIG:
+## 10. В файле .env в папке web:
+Меняем пареметр IMIT_CONFIG, после пробела записываем ссылку до файла imit_condig.py
+Пример:
+```
+FLASK_APP=imit/__init__.py
+IMIT_CONFIG=\tppo\1000-and-1\imit\imit_config.py
+```
+## 11. Создание БД и выполняем миграции: 
 
-
-linux:
-```
-export IMIT_CONFIG=/path/to/config/imit_config.py
-```
-
-windows:
-```
-set IMIT_CONFIG=/path/to/config/imit_config.py
-$env:IMIT_CONFIG = "/path/to/config/imit_config.py"
-```
-## 11. Выполнить миграции базы данных. Для этого экспортируем переменную FLASK_APP
-
-
-linux:
-```
-export FLASK_APP=imit/__init__.py
-```
-
-windows:
-```
-set FLASK_APP=imit/__init__.py
-$env:FLASK_APP = "imit/__init__.py"
-```
-## 12. Создание БД и выполняем миграции: 
-
-Создайте базу данных внутри mysql
+Создайте базу данных (внутри mysql консоли выполнить запрос).
 
 ``` sql
 create database imit;
 ```
 
-Затем выполните миграции внутри
+Затем выполните миграции в обычной консоли
 
 ```
 flask db upgrade
 ```
 
-## 13. Перейти в директорию с репозиторием проекта и запустить сервер
+## 12. Перейти в директорию с репозиторием проекта и запустить сервер
 linux:
 ```
 python3 runserver.py
