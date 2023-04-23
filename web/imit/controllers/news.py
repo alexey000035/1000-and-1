@@ -125,6 +125,20 @@ def add_news_save():
 
     return redirect(f'/')
 
+@app.route('/drafts/<nid>/delete')
+@role_required('editor')
+def delete_draft_news(nid):
+    post = models.Draft_post.query.get_or_404(nid)
+    app.logger.debug("News with id %s is being deleted", nid)
+    # for file in post.files:
+    #     if not remove_file(file):
+    #         return "Ошибка при удалении файла"
+    # # Delete cover image
+    # if post.has_cover_image:
+    #     _remove_cover_image(post)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect('/drafts')
 
 @app.route('/news/<nid>/edit', methods=('GET', 'POST'))
 @role_required('editor')
