@@ -23,3 +23,19 @@ def news_draft_page():
 def news_drafts_full_text_page(nid):
     draft_post = models.Draft_post.query.get_or_404(nid)
     return render_template('drafts/draft_post.html', draft_post=draft_post)
+
+@app.route('/drafts/responderse')
+@role_required('editor')
+def sug_news_draft_page():
+    try:
+        year = int(request.args.get("year", datetime.now().year))
+        end_year = datetime.strptime(str(year + 1), "%Y")
+        year = datetime.strptime(str(year), "%Y")
+        year_selected = True
+    except ValueError:
+        year = datetime.strptime("2016", "%Y")
+        end_year = datetime.now()
+        year_selected = False
+    sug_posts = models.Sug_post.query.filter(models.Sug_post.date_created.between(year, end_year)) \
+        .order_by(desc(models.Sug_post.date_created))
+    return render_template('/drafts/sug_post.html', sug_posts = sug_posts)

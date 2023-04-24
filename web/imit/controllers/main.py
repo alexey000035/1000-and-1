@@ -27,6 +27,43 @@ def about_page():
     return render_template('about.html', active_page="about")
 
 
+@app.route('/news/suggestion', methods=('GET', 'POST'))
+def sug_news():
+    add_form = forms.NewsForm()
+    if request.method == 'POST':
+        if add_form.validate_on_submit():
+            sug_post = models.Sug_post()
+            add_form.populate_obj(sug_post)
+            if add_form.date.data:
+                sug_post.date_created = datetime.strptime(add_form.date.data, "%d.%m.%Y")
+            db.session.add(sug_post)
+            db.session.commit()
+
+            # Save cover image if any.
+            if add_form.cropped_cover_image_data.data:
+                if 'full_cover_image' in request.files:
+                    file = first(request.files.getlist("full_cover_image"))
+                    if file is not None and not file.filename == '':
+                        _save_cover_image(add_form.cropped_cover_image_data.data, file, post)
+                    else:
+                        print("Cropped image is set but full image is not")
+                        app.logger.warning("Cropped image is set but full image is not")
+                else:
+                    print("Cropped image is set but full image is not")
+                    app.logger.warning("Cropped image is set but full image is not")
+
+            return redirect('/')
+        else:
+            app.logger.warning(f"Invalid NewsForm input: {get_form_errors(add_form)}")
+            flash_errors(add_form)
+
+    return render_template("suggestion_post.html",
+                           add_form=add_form,
+                           add_file_form=forms.FileForm(),
+                           edit_file_form=forms.FileEditForm(),
+                           remove_file_form=forms.FileRemoveForm()
+                           )
+
 @app.route('/new_header')
 def test_page():
     return render_template('test.html', active_page="about")
