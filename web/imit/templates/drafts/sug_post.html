@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Предложенные новости{% endblock %}
+
+
+
+{% block content %}
+<a href="/drafts/drafts_news">Черновики новостей</a> |
+<a href="/drafts/drafts_ads">Черновики объявлений</a> |
+<a href="/drafts/responderse">Предложенные новости</a>
+<hr />
+{% for sug_post in sug_posts %}
+    <div class="sug_post">
+
+	    {% if (sug_post.title.strip()) %}
+
+		      <a href='/drafts/responderse/{{ sug_post.id }}'><span class="title ">
+		      {{ sug_post.title }}
+		      </span></a>
+        {% endif %}
+    </div>
+    <div>
+                <p>
+                    <a href="/drafts/responderse/{{ sug_post.id }}/edit">Редактировать</a> |
+                    <a href="/drafts/responderse/{{ sug_post.id }}/delete">Удалить</a>
+                </p>
+    </div>
+{% endfor %}
+{% endblock %}
