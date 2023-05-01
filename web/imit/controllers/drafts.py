@@ -38,4 +38,25 @@ def sug_news_draft_page():
         year_selected = False
     sug_posts = models.Sug_post.query.filter(models.Sug_post.date_created.between(year, end_year)) \
         .order_by(desc(models.Sug_post.date_created))
-    return render_template('/drafts/sug_post.html', sug_posts = sug_posts)
+    return render_template('drafts/draft_suggestion.html', sug_posts = sug_posts)
+    
+@app.route('/drafts/responderse/<nid>')
+@role_required('editor')
+def sug_news_full_text_page(nid):
+    sug_post = models.Sug_post.query.get_or_404(nid)
+    return render_template('drafts/sug_post.html', sug_post=sug_post)
+    
+@app.route('/drafts/responderse/<nid>/delete')
+@role_required('editor')
+def delete_sug_news(nid):
+    sug_post = models.Sug_post.query.get_or_404(nid)
+    app.logger.debug("News with id %s is being deleted", nid)
+    # for file in post.files:
+    #     if not remove_file(file):
+    #         return "Ошибка при удалении файла"
+    # # Delete cover image
+    # if post.has_cover_image:
+    #     _remove_cover_image(post)
+    db.session.delete(sug_post)
+    db.session.commit()
+    return redirect('/drafts/responderse')
