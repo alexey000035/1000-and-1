@@ -145,6 +145,16 @@ span.title.danger {
 .news {
     font-family: 'PT Serif', sans-serif;
 }
+
+.ads{
+    border: 1px solid black;
+    padding: 10px;
+    width: 80%;
+    margin-top: 5px;
+    text-align: center;
+}
+
+
 table.album {
     background-color: #666666;
     border: none;
