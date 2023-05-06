@@ -72,7 +72,25 @@ class User(flask_login.UserMixin, db.Model):
 
     def has_role(self, role):
         return role in [r.title for r in self.roles]
+      
+class Ads(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_created = db.Column(db.DateTime())
+    description = db.Column(db.Text())
+    
+    def __init__(self, date = None):
+        if date is None:
+            self.date_created = datetime.now()
 
+class DraftAds(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.Text())
+    
+    def toAds(self):
+        advert = Ads()
+        advert.description = self.description
+        return advert
+      
 class Menu_items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.Text())
