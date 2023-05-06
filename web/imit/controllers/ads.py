@@ -9,7 +9,7 @@ import base64
 from datetime import datetime
 
 
-@app.route('/news')
+@app.route('/adverts')
 def ads_page():
     try:
         year = int(request.args.get("year", datetime.now().year))
