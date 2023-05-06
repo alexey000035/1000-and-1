@@ -24,6 +24,12 @@ def news_drafts_full_text_page(nid):
     draft_post = models.Draft_post.query.get_or_404(nid)
     return render_template('drafts/draft_post.html', draft_post=draft_post)
 
+@app.route('/drafts/drafts_ads')
+@role_required('editor')
+def ads_draft_page():
+    draft_ads = models.DraftAds.query
+    return render_template('/drafts/draft_advert.html', draft_ads = draft_ads)
+
 @app.route('/drafts/responderse')
 @role_required('editor')
 def sug_news_draft_page():
