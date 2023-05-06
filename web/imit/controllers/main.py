@@ -19,7 +19,9 @@ def index_page():
     years = range(2016, datetime.now().year + 1)
     pages = models.Post.query.filter(models.Post.date_created.between(year, end_year)) \
         .order_by(desc(models.Post.date_created))
-    return render_template('index.html', full=False, posts=pages, cur_year=year.year, years=years, year_selected=True)
+    pages_ads = models.Ads.query.filter(models.Ads.date_created.between(year, end_year)) \
+        .order_by(desc(models.Ads.date_created))
+    return render_template('index.html', full=False, posts=pages, ads=pages_ads, cur_year=year.year, years=years, year_selected=True)
 
 
 @app.route('/about')
