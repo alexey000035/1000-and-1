@@ -1,6 +1,19 @@
 {% extends "layout.html" %}
+{% block title %}Черновики{% endblock %}
 
 {% block content %}
+<a href="/drafts/drafts_news">Черновики новостей</a> | 
+<a href="/drafts/drafts_ads">Черновики объявлений</a> | 
+<a href="/drafts/responderse">Предложенные новости</a>
 
-
+<hr />
+{% for draft_advert in draft_ads %}
+    <div class = "ads">
+        {{ draft_advert.description|safe}}
+                <p>
+                    <a href="/drafts_ads/{{ draft_advert.id }}/edit">Редактировать</a> |
+                    <a href="/drafts_ads/{{ draft_advert.id }}/delete">Удалить</a>
+                </p>
+    </div>
+{% endfor %}
 {% endblock %}
