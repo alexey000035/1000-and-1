@@ -38,7 +38,8 @@ def add_ads():
                	advert.date_created = datetime.strptime(add_form.date.data, "%Y.%m.%n")          
             db.session.add(advert)
             db.session.commit()
-
+            return redirect('/')
+            
         else:
             app.logger.warning("Invalid NewsForm input: {}".format(get_form_errors(add_form)))
        	    flash_errors(add_form)
