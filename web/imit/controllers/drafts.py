@@ -66,3 +66,43 @@ def delete_sug_news(nid):
     db.session.delete(sug_post)
     db.session.commit()
     return redirect('/drafts/responderse')
+    
+@app.route('/drafts/responderse/<nid>/edit', methods=('GET', 'POST'))
+@role_required('editor')
+def edit_sug_news(nid):
+    edit_form = forms.NewsForm()
+    sug_post = models.Sug_post.query.get_or_404(nid).toPost()
+    if request.method == 'POST':
+        if edit_form.validate_on_submit():
+            app.logger.debug("News with id %s is being edited", nid)
+            edit_form.populate_obj(sug_post)
+            if edit_form.date.data is not None and edit_form.date.data != "":
+                sug_post.date_created = datetime.strptime(edit_form.date.data, "%d.%m.%Y")
+            db.session.add(sug_post)
+            db.session.commit()
+
+            # Delete cover image if any
+            if edit_form.delete_cover_image.data and sug_post.has_cover_image:
+                _remove_cover_image(sug_post)
+            # Save cover image if any.
+            if edit_form.cropped_cover_image_data.data:
+                if sug_post.has_cover_image:
+                    _remove_cover_image(sug_post)
+                if 'full_cover_image' in request.files:
+                    file = first(request.files.getlist("full_cover_image"))
+                    if file is not None and not file.filename == '':
+                        _save_cover_image(edit_form.cropped_cover_image_data.data, file, sug_post)
+                    else:
+                        app.logger.warning("Cropped image is set but full image is not")
+                else:
+                    app.logger.warning("Cropped image is set but full image is not")
+            return redirect('/drafts/responderse')
+        else:
+            app.logger.debug("Invalid NewsForm input: {}".format(get_form_errors(edit_form)))
+            app.logger.debug("{}".format(first(request.files.getlist("full_cover_image"))))
+            flash_errors(edit_form)
+    # Passing post data to form fields for editing
+    edit_form.title.data = sug_post.title
+    edit_form.full_text.data = sug_post.full_text
+    return render_template("suggestion_post.html", add_form=edit_form, sug_post=sug_post, add_file_form=forms.FileForm(),
+                           edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
