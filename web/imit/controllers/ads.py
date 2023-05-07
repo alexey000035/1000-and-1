@@ -71,7 +71,8 @@ def edit_ads(nid):
             app.logger.debug("Ads with id %s is being edited", nid)
             edit_form.populate_obj(advert)
             db.session.commit()
-
+            return redirect('/')
+            
         else:
             app.logger.debug("Invalid AdsForm input: {}".format(get_form_errors(edit_form)))
             flash_errors(edit_form)
