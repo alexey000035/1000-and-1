@@ -97,7 +97,6 @@ class Menu(db.Model):
     name = db.Column(db.Text())
     father_id = db.Column(db.Integer)
     size = db.Column(db.Integer)
-    column_number = db.Column(db.Integer)
 
 class Draft_post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -65,5 +65,4 @@ def edit_menu(nid):
     if item.father_id is not None:
         u = models.Menu.query.filter_by(id=item.father_id).first()
         edit_form.father.data = u.name
-    edit_form.column_number.data = item.column_number
     return render_template("menu/add_menu.html", add_form=edit_form)

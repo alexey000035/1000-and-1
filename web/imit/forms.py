@@ -43,13 +43,9 @@ class MenuForm(FlaskForm):
                         [validators.InputRequired(),
                          validators.Length(min=3, max=100,
                                            message="Необходим текст не более 100 символов и не менее 1")])
-    is_header = BooleanField("Название раздела", default=False)
     size = IntegerField("Размер заголовка(h2 или h3)", [validators.InputRequired(),
                          validators.NumberRange(min=2, max=3,
                                            message="Необходимо число от 2 до 3")], default=2)
-    column_number = IntegerField("Номер колонки(1-3)", [validators.InputRequired(),
-                         validators.NumberRange(min=1, max=3,
-                                           message="Необходимо число от 1 до 3")], default=1)
     father = StringField("К какому пункту меню относится ",default=None)
     
 
