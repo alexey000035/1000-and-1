@@ -154,6 +154,21 @@ span.title.danger {
     text-align: center;
 }
 
+#myModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 20%;
+    height: 20%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.close {
+    font-size: 24px;
+}
 
 table.album {
     background-color: #666666;
