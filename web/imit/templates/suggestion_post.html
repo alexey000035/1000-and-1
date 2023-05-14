@@ -6,7 +6,7 @@
     {% include 'error_flash.html' %}
     <a href="/page/instruction">Инструкция</a><br/>
     <br/>
-    <form  method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+    <form id="myForm"  method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
         {{ add_form.csrf_token }}
         {{ add_form.title.label }} {{ add_form.title() }} <br/>
         {{ add_form.full_cover_image() }}
@@ -46,6 +46,7 @@
     </form>
     {% if current_user.is_authenticated and current_user.has_role('editor') %}
     <script type="text/javascript">
+       
         function btn() {
 
         fetch("/news/add/save",{ method: "POST", body: new FormData(document.querySelector("form"))});
@@ -55,5 +56,18 @@
     </script>
 
     <button name= "save"  onclick='btn()' value="Сохранить как черновик">Добавить в черновики</button>
+    
+    {% else %}
+    <script type="text/javascript">
+        const myForm = document.getElementById('myForm');;
+        
+        myForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // отменяем действие по умолчанию, чтобы форма не отправлялась
+
+            alert('Форма отправлена!'); // выводим сообщение после отправки формы
+            
+            myForm.submit();
+        });
+    </script>
     {% endif %}
 {% endblock %}
