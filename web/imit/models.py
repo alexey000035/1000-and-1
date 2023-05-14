@@ -91,17 +91,14 @@ class DraftAds(db.Model):
         advert.description = self.description
         return advert
       
-class Menu_items(db.Model):
+class Menu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.Text())
     name = db.Column(db.Text())
-    is_list = db.Column(db.Boolean)
-    
-class Menu_subitems(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    link = db.Column(db.Text())
-    name = db.Column(db.Text())
-    item = db.Column(db.Integer)
+    is_header = db.Column(db.Boolean)
+    father_id = db.Column(db.Integer)
+    size = db.Column(db.Integer)
+    column_number = db.Column(db.Integer)
 
 class Draft_post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
