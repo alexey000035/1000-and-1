@@ -4,7 +4,7 @@ import imit.utils as utils
 from imit.utils import role_required, flash_errors, get_form_errors
 from flask import render_template, request, redirect, make_response, g, jsonify, flash
 import flask_login
-from sqlalchemy import desc
+from sqlalchemy import desc, asc
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
@@ -12,7 +12,7 @@ import os
 @app.context_processor
 def inject_items_list():
     def get_items_list():
-        return models.Menu.query
+        return models.Menu.query.order_by(asc(models.Menu.number))
     return dict(items_list = get_items_list())
 
 @app.route('/')

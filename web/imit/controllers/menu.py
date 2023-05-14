@@ -4,7 +4,7 @@ from imit.utils import role_required, flash_errors, get_form_errors, remove_file
 from flask import render_template, request, redirect, abort
 from werkzeug.utils import secure_filename
 import os
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 import base64
 from datetime import datetime
 
@@ -26,6 +26,15 @@ def add_menu():
                 #print(add_form.father.data)
                 item.father_id = u.id
             add_form.populate_obj(item)
+            
+            menu_items = models.Menu.query.filter_by(father_id=item.father_id)
+            x = 0
+            for menu_item in menu_items:
+                print (menu_item.name)
+                if menu_item.number > x:
+                    x = menu_item.number
+            item.number = x + 1
+            
             db.session.add(item)
             db.session.commit()
             return redirect('/menu/list')
@@ -52,8 +61,15 @@ def edit_menu(nid):
         if edit_form.validate_on_submit():
             app.logger.debug("Item with id %s is being edited", nid)
             edit_form.populate_obj(item)
+            
+            menu_items = models.Menu.query.filter_by(father_id=item.father_id)
+            for menu_item in menu_items: 
+                if menu_item.number >= item.number and menu_item.id != item.id:
+                    menu_item.number += 1
+            
+            
             db.session.commit()
-
+            
             return redirect('/menu/list')
         else:
             app.logger.debug("Invalid MenuForm input: {}".format(get_form_errors(edit_form)))
@@ -62,6 +78,7 @@ def edit_menu(nid):
     edit_form.link.data = item.link
     edit_form.name.data = item.name
     edit_form.size.data = item.size
+    edit_form.number.data = item.number
     if item.father_id is not None:
         u = models.Menu.query.filter_by(id=item.father_id).first()
         edit_form.father.data = u.name

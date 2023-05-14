@@ -47,7 +47,7 @@ class MenuForm(FlaskForm):
                          validators.NumberRange(min=2, max=3,
                                            message="Необходимо число от 2 до 3")], default=2)
     father = StringField("К какому пункту меню относится ",default=None)
-    
+    number = IntegerField("Номер пункта меню")
 
 class InitUserForm(FlaskForm):
     uid = StringField("Имя пользователя",
