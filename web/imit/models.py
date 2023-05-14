@@ -91,6 +91,20 @@ class DraftAds(db.Model):
         advert.description = self.description
         return advert
       
+class Employers(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    logo = db.Column(db.String(150))
+    link = db.Column(db.String(100))
+    promo_link = db.Column(db.String(500))
+    date = db.Column(db.DateTime())
+    desc_company = db.Column(db.String(500))
+    
+    @property
+    def has_cover_image(self):
+        return self.logo is not None
+
+
 class Menu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.Text())
