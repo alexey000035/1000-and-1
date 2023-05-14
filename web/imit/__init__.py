@@ -48,6 +48,7 @@ import imit.controllers.main
 import imit.controllers.admin
 import imit.controllers.drafts
 import imit.controllers.ads
+import imit.controllers.employers
 import imit.controllers.menu
 import imit.controllers.menu_for_header
 import imit.controllers.news
