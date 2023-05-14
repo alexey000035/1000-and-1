@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}ADD ADVERT{% endblock %}
+
+{% block content %}
+    <h1>Add advert</h1>
+    <form method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+        {{ add_form.csrf_token }}
+        {{ add_form.date(style="display:none") }}<br/>
+	<div class="ads_add_form" >
+            {{ add_form.description.label }} <br/>{{ add_form.description() }} <br/>
+        </div>
+        <input type="submit" value="Опубликовать"/>
+    </form>
+    <br/>
+    <script type="text/javascript">
+        function btn2() {
+
+        fetch("/ads/add/save",{ method: "POST", body: new FormData(document.querySelector("form"))});
+        alert( 'Черновик добавлен' );
+        window.location.href = "/drafts/drafts_ads";
+        }
+    </script>
+
+    <button name= "save"  onclick='btn2()' value="Сохранить как черновик">Добавить в черновики</button>
+
+    <!---
+    <script>
+        imit.News.initTinyMCE('#full_text', 'Текст новости');
+    </script> -->
+{% endblock %}

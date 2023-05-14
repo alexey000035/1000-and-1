@@ -1,5 +1,4 @@
 from flask import abort
-
 from imit import app, models, forms, db, babel
 import imit.utils as utils
 from imit.utils import role_required, flash_errors, get_form_errors
@@ -10,6 +9,11 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
 
+@app.context_processor
+def inject_items_list():
+    def get_items_list():
+        return models.Menu.query
+    return dict(items_list = get_items_list())
 
 @app.route('/')
 def index_page():
@@ -19,13 +23,52 @@ def index_page():
     years = range(2016, datetime.now().year + 1)
     pages = models.Post.query.filter(models.Post.date_created.between(year, end_year)) \
         .order_by(desc(models.Post.date_created))
-    return render_template('index.html', full=False, posts=pages, cur_year=year.year, years=years, year_selected=True)
+    pages_ads = models.Ads.query.filter(models.Ads.date_created.between(year, end_year)) \
+        .order_by(desc(models.Ads.date_created))
+    return render_template('index.html', full=False, posts=pages, ads=pages_ads, cur_year=year.year, years=years, year_selected=True)
 
 
 @app.route('/about')
 def about_page():
     return render_template('about.html', active_page="about")
 
+
+@app.route('/news/suggestion', methods=('GET', 'POST'))
+def sug_news():
+    add_form = forms.NewsForm()
+    if request.method == 'POST':
+        if add_form.validate_on_submit():
+            sug_post = models.Sug_post()
+            add_form.populate_obj(sug_post)
+            if add_form.date.data:
+                sug_post.date_created = datetime.strptime(add_form.date.data, "%d.%m.%Y")
+            db.session.add(sug_post)
+            db.session.commit()
+
+            # Save cover image if any.
+            if add_form.cropped_cover_image_data.data:
+                if 'full_cover_image' in request.files:
+                    file = first(request.files.getlist("full_cover_image"))
+                    if file is not None and not file.filename == '':
+                        _save_cover_image(add_form.cropped_cover_image_data.data, file, post)
+                    else:
+                        print("Cropped image is set but full image is not")
+                        app.logger.warning("Cropped image is set but full image is not")
+                else:
+                    print("Cropped image is set but full image is not")
+                    app.logger.warning("Cropped image is set but full image is not")
+
+            return redirect('/')
+        else:
+            app.logger.warning(f"Invalid NewsForm input: {get_form_errors(add_form)}")
+            flash_errors(add_form)
+
+    return render_template("suggestion_post.html",
+                           add_form=add_form,
+                           add_file_form=forms.FileForm(),
+                           edit_file_form=forms.FileEditForm(),
+                           remove_file_form=forms.FileRemoveForm()
+                           )
 
 @app.route('/new_header')
 def test_page():
@@ -51,6 +94,7 @@ def login():
         if form.validate_on_submit():
             if models.login_user(form.uid.data, form.password.data):
                 u = models.User.query.filter_by(uid=form.uid.data).first()
+
                 flask_login.login_user(u)
                 return redirect('/')
             else:

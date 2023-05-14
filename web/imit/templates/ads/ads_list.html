@@ -1,0 +1,14 @@
+{% for advert in ads %}
+    <div class="news">
+        <b>{{ advert.date_created.strftime('%d.%m.%Y') }}</b>
+        &nbsp;
+        <div>{{ advert.description|safe}}</div>
+    <div>
+            {% if current_user.is_authenticated and current_user.has_role('editor') %}
+                <p>
+                    <a href="/ads/{{ advert.id }}/edit">Редактировать</a> |
+                    <a href="/ads/{{ advert.id }}/delete">Удалить</a>
+                </p>
+            {% endif %}
+    </div>
+{% endfor %}

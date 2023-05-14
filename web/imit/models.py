@@ -72,24 +72,73 @@ class User(flask_login.UserMixin, db.Model):
 
     def has_role(self, role):
         return role in [r.title for r in self.roles]
-
-class Menu_items(db.Model):
+      
+class Ads(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    link = db.Column(db.Text())
-    name = db.Column(db.Text())
-    is_list = db.Column(db.Boolean)
+    date_created = db.Column(db.DateTime())
+    description = db.Column(db.Text())
     
-class Menu_subitems(db.Model):
+    def __init__(self, date = None):
+        if date is None:
+            self.date_created = datetime.now()
+
+class DraftAds(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.Text())
+    
+    def toAds(self):
+        advert = Ads()
+        advert.description = self.description
+        return advert
+      
+class Menu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.Text())
     name = db.Column(db.Text())
-    item = db.Column(db.Integer)
+    father_id = db.Column(db.Integer)
+    size = db.Column(db.Integer)
 
 class Draft_post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.Text())
     full_text = db.Column(db.Text())
     cover_image = db.Column(db.Text())
+
+    @property
+    def short_text(self):
+        # fix: Если нет тегов => BeautifulSoup-> None
+        # но функция str преобразовывала None -> "None"
+        html = ""
+        if self.full_text:
+            html = BeautifulSoup(self.full_text, 'html.parser').p
+            if not html:
+                html = BeautifulSoup(self.full_text, 'html.parser').div
+            if not html:
+                html = BeautifulSoup(self.full_text, 'html.parser')
+        if html:
+            if str(html).replace(" ", "").replace(" ", "") == "<p></p>":
+                html = ""
+
+        return html  # self.full_text
+    def toPost(self):
+        post = Post()
+
+        post.title = self.title
+        post.full_text = self.full_text
+        post.cover_image = self.cover_image
+        post.is_danger = False
+        return post
+
+class Sug_post(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.Text())
+    full_text = db.Column(db.Text())
+    cover_image = db.Column(db.Text())
+    date_created = db.Column(db.DateTime())
+
+    def __init__(self, date=None):
+        if date is None:
+            self.date_created = datetime.now()  # TODO: check for timezone
 
     @property
     def short_text(self):

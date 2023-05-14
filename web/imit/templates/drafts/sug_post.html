@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Черновик: {{ sug_post.title }}{% endblock %}
+{% block head %}
+    <meta property="og:title" content="Черновик: {{ sug_post.title }}"/>
+    <meta property="og:type" content="website"/>
+    {% if sug_post.has_cover_image %}
+        <meta property="og:image" content="https://imit.petrsu.ru/files/covers/ci_{{ sug_post.id }}.png"/>
+    {% endif %}
+    <meta property="og:description" content="{{ sug_post.short_text }}"/>
+    <meta property="og:url" content="https://imit.petrsu.ru/news/{{ sug_post.id }}"/>
+{% endblock %}
+
+{% block content %}
+
+    &nbsp;
+    <span class="title">{{ sug_post.title }}</span>
+    <br/>
+    <div class="post-content">
+        {% if sug_post.has_cover_image %}
+            <div style="float:left; margin-right: 25px;">
+		<a href="/files/covers/{{ sug_post.cover_image }}" rel="prettyPhoto[{{ sug_post.id}}]">
+                <img src="/files/covers/ci_{{ sug_post.id }}.png"
+                     alt="" height="75"
+		     />
+		</a>
+                <br/>
+            </div>
+        {% endif %}
+        <div class="news-text">{{ sug_post.full_text|safe }}</div>
+    </div>
+    <br/>
+
+    {% if current_user.is_authenticated and current_user.has_role('editor') %}
+        <p class="news-links">
+            <a href="/drafts/responderse/{{ sug_post.id }}/edit">Редактировать</a> | <a href="/drafts/responderse/{{ sug_post.id }}/delete">Удалить</a>
+            |
+            <script type="text/javascript">
+            document.write(VK.Share.button({noparse: false}, {type: "round", text: "Поделиться"}));
+            </script>
+        </p>
+    {% endif %}
+{% endblock %}

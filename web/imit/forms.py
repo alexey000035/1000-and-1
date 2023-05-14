@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField, FileRequired
-from wtforms import StringField, PasswordField, HiddenField, TextAreaField, validators, BooleanField
+from wtforms import StringField, PasswordField, HiddenField, TextAreaField, validators, BooleanField, IntegerField
 
 
 class LoginForm(FlaskForm):
@@ -11,6 +11,15 @@ class LoginForm(FlaskForm):
                              [validators.InputRequired(message="Обязательно к заполнению"),
                               validators.Length(min=3, max=30)])
 
+class AdsForm(FlaskForm):
+    description = TextAreaField("Text", [validators.InputRequired()])
+    date = StringField("Date", [validators.Optional(),
+                                validators.Regexp(r"^\d\d\.\d\d\.\d\d\d\d$")])
+    #date = StringField("Date", [validators.Optional(), validators.Regexp(r"^\d\d\d\d.\d\d\.\d\d$")])
+
+class DraftAdsForm(FlaskForm):
+    description = TextAreaField("Text", [validators.InputRequired()])
+    
 
 class NewsForm(FlaskForm):
     title = StringField("Заголовок",
@@ -29,16 +38,16 @@ class NewsForm(FlaskForm):
                                 validators.Regexp(r"^\d\d\.\d\d\.\d\d\d\d$")])
 
 class MenuForm(FlaskForm):
-    link = StringField("Ссылка",
-                        [validators.InputRequired(),
-                         validators.Length(min=1, max=100,
-                                           message="Необходим текст не более 100 символов и не менее 1")])
+    link = StringField("Ссылка")
     name = StringField("Заголовок",
                         [validators.InputRequired(),
                          validators.Length(min=3, max=100,
                                            message="Необходим текст не более 100 символов и не менее 1")])
-    is_list = BooleanField("Есть ли подпункты", default=False)
-
+    size = IntegerField("Размер заголовка(h2 или h3)", [validators.InputRequired(),
+                         validators.NumberRange(min=2, max=3,
+                                           message="Необходимо число от 2 до 3")], default=2)
+    father = StringField("К какому пункту меню относится ",default=None)
+    
 
 class InitUserForm(FlaskForm):
     uid = StringField("Имя пользователя",

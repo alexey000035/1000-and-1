@@ -1,9 +1,9 @@
 DEBUG = False
 TESTING = False
-LOG_FILE = "../imit/logs/imit.log"
+LOG_FILE = "/home/filya/TPPO1/1000-and-1/imit/logs/imit.log"
 #SQLITE_DATABASE_PATH = "//path/to/sqlitedb/imit.db"
 MYSQL_USER = "root"
-MYSQL_PASSWORD = "admin123"
+MYSQL_PASSWORD = "Timit2!0"
 MYSQL_HOST = "localhost"
 MYSQL_DATABASE = "imit"
 #SQLALCHEMY_DATABASE_URI = "sqlite://" + SQLITE_DATABASE_PATH

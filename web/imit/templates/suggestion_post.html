@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block title %}Предложить новость{% endblock %}
+
+{% block content %}
+    <h1>Предложить новость</h1>
+    {% include 'error_flash.html' %}
+    <a href="/page/instruction">Инструкция</a><br/>
+    <br/>
+    <form  method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+        {{ add_form.csrf_token }}
+        {{ add_form.title.label }} {{ add_form.title() }} <br/>
+        {{ add_form.full_cover_image() }}
+
+        {{ add_form.delete_cover_image(style="display:none") }}
+        {{ add_form.cropped_cover_image_data.label }} {{ add_form.cropped_cover_image_data() }} <br/>
+        <div id="cover_image_block"
+                {% if sug_post is not defined or not sug_post.cover_image %}
+             style="display: none"
+                {% endif %}
+        >
+            <img id="cover_image_preview" width="150" height="150"
+                    {% if sug_post is defined and sug_post.cover_image %}
+                 src="/files/covers/{{ sug_post.cover_image }}"
+                    {% else %}
+                 src="#"
+                    {% endif %}/>
+            <br/>
+            <button id="delete_cover_image_button">Удалить изображение</button>
+            <br/>
+        </div>
+
+        <br/>
+        <div id="cropper_block" style="display: none">
+            <img id="cover_image_cropper" style="max-width: 100%" alt="title image cropper" src="#" height="300"/>
+            <br/>
+            <button id="apply_crop_button">Сохранить изображение</button>
+            <button id="cancel_crop_button">Отменить изменение изображения</button>
+            <br/>
+        </div>
+        {{ add_form.full_text.label }} {{ add_form.full_text() }} <br/>
+        {% if current_user.is_authenticated and current_user.has_role('editor') %}
+        <input type="submit"  name="publish" value="Опубликовать"/>
+        {% else %}
+        <input type="submit"  name="publish" value="Отправить"/>
+        {% endif %}
+    </form>
+    {% if current_user.is_authenticated and current_user.has_role('editor') %}
+    <script type="text/javascript">
+        function btn() {
+
+        fetch("/news/add/save",{ method: "POST", body: new FormData(document.querySelector("form"))});
+        alert( 'Черновик добавлен' );
+        window.location.href = "/drafts";
+        }
+    </script>
+
+    <button name= "save"  onclick='btn()' value="Сохранить как черновик">Добавить в черновики</button>
+    {% endif %}
+{% endblock %}
