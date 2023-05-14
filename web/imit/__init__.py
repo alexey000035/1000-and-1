@@ -6,6 +6,7 @@ from flask_admin import Admin
 import logging, logging.handlers
 import os.path
 from flask_babel import Babel
+from sqlalchemy import desc, asc
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -35,6 +36,12 @@ if not app.debug:
     loggers = [app.logger, logging.getLogger('sqlalchemy'), logging.getLogger('ldap3')]
     for logger in loggers:
         logger.addHandler(file_handler)
+
+@app.context_processor
+def inject_items_list():
+    def get_items_list():
+        return models.Menu.query.order_by(asc(models.Menu.number))
+    return dict(items_list = get_items_list())
 
 import imit.models
 import imit.controllers.main

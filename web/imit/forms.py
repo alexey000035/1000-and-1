@@ -12,13 +12,13 @@ class LoginForm(FlaskForm):
                               validators.Length(min=3, max=30)])
 
 class AdsForm(FlaskForm):
-    description = TextAreaField("Text", [validators.InputRequired()])
+    description = TextAreaField("Текст", [validators.InputRequired()])
     date = StringField("Date", [validators.Optional(),
                                 validators.Regexp(r"^\d\d\.\d\d\.\d\d\d\d$")])
     #date = StringField("Date", [validators.Optional(), validators.Regexp(r"^\d\d\d\d.\d\d\.\d\d$")])
 
 class DraftAdsForm(FlaskForm):
-    description = TextAreaField("Text", [validators.InputRequired()])
+    description = TextAreaField("Текст", [validators.InputRequired()])
     
 
 class NewsForm(FlaskForm):

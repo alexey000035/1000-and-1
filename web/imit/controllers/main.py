@@ -9,12 +9,6 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
 
-@app.context_processor
-def inject_items_list():
-    def get_items_list():
-        return models.Menu.query.order_by(asc(models.Menu.number))
-    return dict(items_list = get_items_list())
-
 @app.route('/')
 def index_page():
     year = datetime.strptime(str(datetime.now().year), "%Y")

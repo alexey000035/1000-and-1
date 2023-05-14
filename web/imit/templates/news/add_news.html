@@ -6,7 +6,7 @@
     {% include 'error_flash.html' %}
     <a href="/page/instruction">Инструкция</a><br/>
     <br/>
-    <form  method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+    <form  id="form" method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
         {{ add_form.csrf_token }}
         {{ add_form.title.label }} {{ add_form.title() }} <br/>
         {{ add_form.date(style="display:none") }}<br/>
@@ -42,14 +42,26 @@
         <input type="submit"  name="publish" value="Опубликовать"/>
 <!--        <input type="submit"  name="publish" value="Опубликовать"/>-->
     </form>
-    <script type="text/javascript">
-        function btn() {
-
-        fetch("/news/add/save",{ method: "POST", body: new FormData(document.querySelector("form"))});
-        alert( 'Черновик добавлен' );
-        window.location.href = "/drafts";
+    <script type="text/javascript">        
+        function btn(event) {
+        if (document.querySelector('form input[name="title"]').value.length === 0) {
+            alert('Заполните поле заголовка');
+            event.preventDefault();
+            return;
+        } else if (document.querySelector('form textarea[name="full_text"]').value.length === 0){
+            alert('Заполните текст заголовка');
+            event.preventDefault();
+            return;
+        } else {
+            fetch('/news/add/save', {
+            method: 'POST',
+            body: new FormData(document.querySelector('form'))
+        });
+        alert('Черновик добавлен');
+        window.location.replace('/drafts');
         }
-    </script>
+        }
+   </script>
 
     <button name= "save"  onclick='btn()' value="Сохранить как черновик">Добавить в черновики</button>
 

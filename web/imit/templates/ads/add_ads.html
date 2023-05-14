@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
-{% block title %}ADD ADVERT{% endblock %}
+{% block title %}Добавить объявление{% endblock %}
 
 {% block content %}
-    <h1>Add advert</h1>
+    <h1>Добавить объявление</h1>
     <form method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
         {{ add_form.csrf_token }}
         {{ add_form.date(style="display:none") }}<br/>
@@ -13,11 +13,19 @@
     </form>
     <br/>
     <script type="text/javascript">
-        function btn2() {
-
-        fetch("/ads/add/save",{ method: "POST", body: new FormData(document.querySelector("form"))});
-        alert( 'Черновик добавлен' );
-        window.location.href = "/drafts/drafts_ads";
+        function btn2(event) {
+        if (document.querySelector('form textarea[name="description"]').value.length === 0){
+            alert('Заполните текст заголовка');
+            event.preventDefault();
+            return;
+        } else {
+            fetch('/ads/add/save', {
+            method: 'POST',
+            body: new FormData(document.querySelector('form'))
+        });
+        alert('Черновик добавлен');
+        window.location.replace('/drafts/drafts_ads');
+        }
         }
     </script>
 

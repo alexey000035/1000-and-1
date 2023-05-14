@@ -68,13 +68,13 @@
     </div>
     <div class="line-bot-s"></div>
     <ul id="menu">
-        {% for item in items_list|sort(attribute='number') %}
+        {% for item in items_list %}
             {% if item.father_id == None %}
                 <li class="one"><a href="{{ item.link }}">{{ item.name }}</a>
                 
                 {% if item.name == "Институт" %}
                 <div class="dropdown_2columns">
-                {% for item1 in items_list|sort(attribute='number') %}
+                {% for item1 in items_list%}
                     {% if item1.father_id == item.id %}
                     <div class="col_2">
                         <a href="{{ item1.link }}"><h{{item1.size}}>{{ item1.name }}</h{{item1.size}}></a>
@@ -82,7 +82,7 @@
                     {% if item1.name == "Структура" %}
                         <div class="col_2">
                             <ul class="sub">
-                                {% for item2 in items_list|sort(attribute='number') %}
+                                {% for item2 in items_list%}
                                      {% if item2.father_id == item1.id %}
                                          <li><a href="{{ item2.link }}" class="strong">{{ item2.name }}</a></li>
                                      {% endif %}
@@ -98,7 +98,7 @@
                 {% if item.name == "Обучение" %}
                     <div class="dropdown_3columns">
                         <ul>
-                            {% for item1 in items_list|sort(attribute='number') %}
+                            {% for item1 in items_list%}
                                 {% if item1.father_id == item.id and item1.link != ""%}
                                     <li style="line-height:1.2em;"><a href="{{ item1.link }}" class="strong">{{ item1.name }}</a><br/></li>
                                 {% endif %}
@@ -110,7 +110,7 @@
                                 <div class="col_1">
                                     <h{{item1.size}}>{{ item1.name }}</h{{item1.size}}>
                                     <ul>
-                                        {% for item2 in items_list|sort(attribute='number') %}
+                                        {% for item2 in items_list%}
                                             {% if item2.father_id == item1.id%}
                                                 <li style="line-height:1.2em;"><a href="{{ item2.link }}">{{ item2.name }}</a><br/></li>
                                             {% endif %}
