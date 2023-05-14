@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField, FileRequired
 from wtforms import StringField, PasswordField, HiddenField, TextAreaField, validators, BooleanField, IntegerField
-
+from wtforms.fields import DateField
 
 class LoginForm(FlaskForm):
     uid = StringField("Имя пользователя",
@@ -63,6 +63,20 @@ class CreateCustomUserForm(FlaskForm):
                              [validators.InputRequired(message="Обязательно к заполнению"),
                               validators.Length(min=6, max=30)])
 
+class EmployersForm(FlaskForm):
+    name = StringField("Name", [validators.InputRequired(), validators.Length(min=1, max=100, message="Необходим текст не более 100 символов и не менее 1")])
+    logo = StringField("Logo", [validators.InputRequired(), validators.Length(min=1, max=150, message="Необходим текст не более 150 символов и не менее 1")])
+    link = StringField("Link", [validators.InputRequired(), validators.Length(min=1, max=100, message="Необходим текст не более 100 символов и не менее 1")])
+    promo_link = StringField("Name", [validators.InputRequired(), validators.Length(min=1, max=100, message="Необходим текст не более 100 символов и не менее 1")])
+    date = DateField('Date', format='%Y-%m-%d')
+    desc_company =  TextAreaField("Text", [validators.InputRequired()]) 
+    cropped_cover_image_data = \
+        HiddenField("", [validators.Optional(),
+                         validators.Regexp(r"^data:image\/png;base64,[A-Za-z0-9!$&',()*+;=\-._~:@\/?%\s]+$")])
+    full_cover_image = FileField("Титульное изображение",
+                                 [validators.Optional(), FileAllowed(['jpg', 'png', 'jpeg', 'gif'],
+                                                                     'Допустимы только файлы изображений!')])
+    delete_cover_image = BooleanField("", default=False)
 
 class PageForm(FlaskForm):
     title_ru = StringField("Заголовок",
