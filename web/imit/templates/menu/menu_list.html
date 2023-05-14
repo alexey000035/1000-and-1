@@ -1,0 +1,20 @@
+<h1 class="title">Пункты меню</h1>
+{% if current_user.is_authenticated and current_user.has_role('editor') %}
+     <a href="/menu/add">Добавить пункт меню</a>
+{% endif %}
+<hr />
+{% for item in items %}
+    <div class="menu">
+	    {% if (item.name.strip()) %}
+            <li>
+		      {{ item.name }}
+		        </li>
+        {% endif %}
+    </div>
+    <div>
+                <p>
+                    <a href="/menu/{{ item.id }}/edit">Редактировать</a> |
+                    <a href="/menu/{{ item.id }}/delete">Удалить</a>
+                </p>
+    </div>
+{% endfor %}

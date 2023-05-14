@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField, FileRequired
-from wtforms import StringField, PasswordField, HiddenField, TextAreaField, validators, BooleanField
+from wtforms import StringField, PasswordField, HiddenField, TextAreaField, validators, BooleanField, IntegerField
 
 
 class LoginForm(FlaskForm):
@@ -38,16 +38,20 @@ class NewsForm(FlaskForm):
                                 validators.Regexp(r"^\d\d\.\d\d\.\d\d\d\d$")])
 
 class MenuForm(FlaskForm):
-    link = StringField("Ссылка",
-                        [validators.InputRequired(),
-                         validators.Length(min=1, max=100,
-                                           message="Необходим текст не более 100 символов и не менее 1")])
+    link = StringField("Ссылка")
     name = StringField("Заголовок",
                         [validators.InputRequired(),
                          validators.Length(min=3, max=100,
                                            message="Необходим текст не более 100 символов и не менее 1")])
-    is_list = BooleanField("Есть ли подпункты", default=False)
-
+    is_header = BooleanField("Название раздела", default=False)
+    size = IntegerField("Размер заголовка(h2 или h3)", [validators.InputRequired(),
+                         validators.NumberRange(min=2, max=3,
+                                           message="Необходимо число от 2 до 3")], default=2)
+    column_number = IntegerField("Номер колонки(1-3)", [validators.InputRequired(),
+                         validators.NumberRange(min=1, max=3,
+                                           message="Необходимо число от 1 до 3")], default=1)
+    father = StringField("К какому пункту меню относится ",default=None)
+    
 
 class InitUserForm(FlaskForm):
     uid = StringField("Имя пользователя",

@@ -1,5 +1,4 @@
 from flask import abort
-
 from imit import app, models, forms, db, babel
 import imit.utils as utils
 from imit.utils import role_required, flash_errors, get_form_errors
@@ -10,6 +9,11 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
 
+@app.context_processor
+def inject_items_list():
+    def get_items_list():
+        return models.Menu.query
+    return dict(items_list = get_items_list())
 
 @app.route('/')
 def index_page():
@@ -90,6 +94,7 @@ def login():
         if form.validate_on_submit():
             if models.login_user(form.uid.data, form.password.data):
                 u = models.User.query.filter_by(uid=form.uid.data).first()
+
                 flask_login.login_user(u)
                 return redirect('/')
             else:

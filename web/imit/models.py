@@ -95,7 +95,6 @@ class Menu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.Text())
     name = db.Column(db.Text())
-    is_header = db.Column(db.Boolean)
     father_id = db.Column(db.Integer)
     size = db.Column(db.Integer)
     column_number = db.Column(db.Integer)
