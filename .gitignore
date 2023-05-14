@@ -24,5 +24,6 @@ web/imit/static/files
 web/env
 
 
-imit/logs/
+imit/logs/*
 web/imit/controllers/__pycache__
+imit/logs/imit.log
