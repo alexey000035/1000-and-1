@@ -1,0 +1,93 @@
+<h1 class="title">Employers</h1>
+{% if current_user.is_authenticated and current_user.has_role('editor') %}
+     <a href="/employers/add">Add employer</a>
+{% endif %}
+{% if full %}
+    <p>Года:
+        {% for y in years %}
+            {% if y == cur_year and year_selected %}
+                <b>{{ y }}</b>
+            {% else %}
+                <a href="/employers?year={{ y }}">{{ y }}</a>
+            {% endif %}
+        {% endfor %}
+    </p>
+{% endif %}
+<hr/>
+
+<table>
+{% for employer in employers %}
+<tr>
+    <td>
+        <a href='/employers/{{ employer.id }}'><span class="title "> link to employer</a>
+    </td>
+    <td>
+       	{{ employer.name}}
+    </td>
+    <td>
+       	{{ employer.logo}}
+       	</br>
+       	<p> Image </p>
+    </td>
+    <td> 
+    	{% if employer.has_cover_image %}
+            <div style="float:left; margin-right: 10px;">
+	        <a href="/files/covers/{{ employer.logo }}" rel="prettyPhoto[{{ employer.id}}]">
+                <img src="/files/covers/ci_{{ employer.id }}.png" alt=""
+                         full-cover-image="/files/covers/{{ employer.logo }}"
+                         height="75"/> </a><br/>
+                </div>
+        {% endif %}
+    </td>
+    <td>
+        <a href ='{{ employer.link}}'> {{employer.link}} </a>
+    </td>
+    <td>
+       	{{ employer.desc_company}}
+    </td>
+    <td>
+       	{{ employer.promo_link}}
+    </td>
+    <td>
+       	{{ employer.date}}
+    </td>
+    <td>
+    	<div>
+            {% if current_user.is_authenticated and current_user.has_role('editor') %}
+                <input type="submit" onclick="openForm()" value="Delete">
+                <div id="myModal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form>
+                            <p> Tochno Delete?</p>
+                            <a href="/employers/{{ employer.id }}/delete">Удалить</a>
+                        </form>
+                    </div>
+                </div>
+                <p>
+                    <a href="/employers/{{ employer.id }}/edit">Редактировать</a> 
+                </p>
+            {% endif %}
+    	</div>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<script>
+        function openForm() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "block";
+
+            var closeBtn = document.getElementsByClassName("close")[0];
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+    </script>

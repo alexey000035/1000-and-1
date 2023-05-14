@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block title %}Adding employer{% endblock %}
+
+{% block content %}
+    <h1>Add employer</h1>
+    {% include 'error_flash.html' %}
+    <a href="/page/instruction">Инструкция</a><br/>
+    <br/>
+    <form  method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+        {{ add_form.csrf_token }}
+        {{ add_form.name.label }} <br/>{{ add_form.name() }} <br/>
+        {{ add_form.logo.label }} <br/>{{ add_form.logo() }} <br/>
+        {{ add_form.link.label }} <br/>{{ add_form.link() }} <br/>
+        <!-- name in website instead promo_link who does know?-->
+        {{ add_form.promo_link.label }}<p>PROMO_LIMK</p> <br/>{{ add_form.promo_link() }} <br/>
+        {{ add_form.date.label }} <br/>{{ add_form.date() }} <br/>
+        {{ add_form.desc_company.label }} <br/>{{ add_form.desc_company() }} <br/>
+        
+        {{ add_form.full_cover_image() }}
+
+        {{ add_form.delete_cover_image(style="display:none") }}
+        {{ add_form.cropped_cover_image_data.label }} {{ add_form.cropped_cover_image_data() }} <br/>
+        <div id="cover_image_block"
+                {% if employer is not defined or not employer.cover_image %}
+             style="display: none"
+                {% endif %}
+        >
+            <img id="cover_image_preview" width="150" height="150"
+                    {% if employer is defined and employer.cover_image %}
+                 src="/files/covers/{{ employer.cover_image }}"
+                    {% else %}
+                 src="#"
+                    {% endif %}/>
+            <br/>
+            <button id="delete_cover_image_button">Удалить изображение</button>
+            <br/>
+        </div>
+
+        <br/>
+        <div id="cropper_block" style="display: none">
+            <img id="cover_image_cropper" style="max-width: 100%" alt="title image cropper" src="#" height="300"/>
+            <br/>
+            <button id="apply_crop_button">Сохранить изображение</button>
+            <button id="cancel_crop_button">Отменить изменение изображения</button>
+            <br/>
+        </div>
+        <input type="submit"  onclick='check()' name="publish" value="Опубликовать"/>
+<!--        <input type="submit"  name="publish" value="Опубликовать"/>-->
+    </form>
+    <script type="text/javascript">
+        function check() {
+        	alert( 'Employer added' );
+        	window.location.href = "/employers";
+        }
+    </script>
+<!--    {% include "file_manager.html" %}-->
+<!--    <script type="text/javascript">-->
+<!--        imit.News.initTinyMCE('#full_text', 'Текст новости');-->
+<!--        {% if post is defined and post.id is defined and post.origin != "vk" %}-->
+<!--            imit.FileManager.initFileManager({"post": {{ post.id }}});-->
+<!--        {% else %}-->
+<!--            imit.FileManager.initFileManager({"block": true, "block_message": "Необходимо сохранить новость"});-->
+<!--        {% endif %}-->
+<!--    </script>-->
+
+{% endblock %}
