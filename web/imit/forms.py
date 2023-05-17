@@ -63,13 +63,27 @@ class CreateCustomUserForm(FlaskForm):
                              [validators.InputRequired(message="Обязательно к заполнению"),
                               validators.Length(min=6, max=30)])
 
+class EmployerAgent(FlaskForm):
+    name = StringField("Name", [validators.InputRequired(), validators.Length(min=1, max=20, message="Необходим текст не более 20 символов и не менее 1")])
+    surname = StringField("Surname", [validators.InputRequired(), validators.Length(min=1, max=20, message="Необходим текст не более 20 символов и не менее 1")])
+    second_name = StringField("Second name", [validators.InputRequired(), validators.Length(min=1, max=20, message="Необходим текст не более 20 символов и не менее 1")])
+    email = StringField("Mail", [validators.InputRequired(), validators.Length(min=1, max=20, message="Необходим текст не более 20 символов и не менее 1")])
+    phone = StringField("Phone", [validators.InputRequired(), validators.Length(min=1, max=20, message="Необходим текст не более 20 символов и не менее 1")])
+    telegram = StringField("Telegram or other messeger", [validators.InputRequired(), validators.Length(min=1, max=20, message="Необходим текст не более 20 символов и не менее 1")])
+    id_empl = IntegerField("Ident company")
+
 class EmployersForm(FlaskForm):
     name = StringField("Name", [validators.InputRequired(), validators.Length(min=1, max=100, message="Необходим текст не более 100 символов и не менее 1")])
     logo = StringField("Logo", [validators.InputRequired(), validators.Length(min=1, max=150, message="Необходим текст не более 150 символов и не менее 1")])
     link = StringField("Link", [validators.InputRequired(), validators.Length(min=1, max=100, message="Необходим текст не более 100 символов и не менее 1")])
     promo_link = StringField("Name", [validators.InputRequired(), validators.Length(min=1, max=100, message="Необходим текст не более 100 символов и не менее 1")])
-    date = DateField('Date', format='%Y-%m-%d')
-    desc_company =  TextAreaField("Text", [validators.InputRequired()]) 
+    #date = StringField("Дата", [validators.Optional(),
+                                #validators.Regexp(r"^\d\d\.\d\d\.\d\d\d\d$")])
+    date = DateField('Date', format='%Y-%m-%d')    
+    desc_company =  TextAreaField("Text", [validators.InputRequired()])
+    email = StringField("Почта")
+    phone = StringField("Телефон")
+    practice = StringField("Прохождение практики")
     cropped_cover_image_data = \
         HiddenField("", [validators.Optional(),
                          validators.Regexp(r"^data:image\/png;base64,[A-Za-z0-9!$&',()*+;=\-._~:@\/?%\s]+$")])
@@ -77,6 +91,7 @@ class EmployersForm(FlaskForm):
                                  [validators.Optional(), FileAllowed(['jpg', 'png', 'jpeg', 'gif'],
                                                                      'Допустимы только файлы изображений!')])
     delete_cover_image = BooleanField("", default=False)
+
 
 class PageForm(FlaskForm):
     title_ru = StringField("Заголовок",
