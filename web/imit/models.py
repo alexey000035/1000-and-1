@@ -91,6 +91,17 @@ class DraftAds(db.Model):
         advert.description = self.description
         return advert
       
+class Agents(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    id_empl = db.Column(db.Integer, db.ForeignKey('employers.id'))
+    name = db.Column(db.String(100))
+    surname = db.Column(db.String(100))
+    second_name = db.Column(db.String(100))
+    email = db.Column(db.String(100))
+    phone = db.Column(db.String(100))
+    telegram = db.Column(db.String(100))
+    
+
 class Employers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -99,6 +110,9 @@ class Employers(db.Model):
     promo_link = db.Column(db.String(500))
     date = db.Column(db.DateTime())
     desc_company = db.Column(db.String(500))
+    email = db.Column(db.String(100))
+    phone = db.Column(db.String(100))
+    practice = db.Column(db.String(100))
     
     @property
     def has_cover_image(self):
