@@ -1,6 +1,6 @@
-<h1 class="title">Employers</h1>
+<h1 class="title">Вакансии</h1>
 {% if current_user.is_authenticated and current_user.has_role('editor') %}
-     <a href="/employers/add">Add employer</a>
+     <a href="/employers/add">Добавить вакансию</a>
 {% endif %}
 {% if full %}
     <p>Года:
@@ -52,8 +52,21 @@
        	{{ employer.date}}
     </td>
     <td>
+    	<p>Почта вакансии<p>
+       	{{ employer.email}}
+    </td>
+    <td>
+    	<p>Телефон вакансии<p>
+       	{{ employer.phone}}
+    </td>
+    <td>
+    	<p>Прохождение практики<p>
+       	{{ employer.practice}}
+    </td>
+    <td>
     	<div>
             {% if current_user.is_authenticated and current_user.has_role('editor') %}
+            <!--- Тут не передается нужный nid он берется первый из таблицы
                 <input type="submit" onclick="openForm()" value="Delete">
                 <div id="myModal" class="modal" style="display:none;">
                     <div class="modal-content">
@@ -64,8 +77,12 @@
                         </form>
                     </div>
                 </div>
+                --->
                 <p>
                     <a href="/employers/{{ employer.id }}/edit">Редактировать</a> 
+                </p>
+                <p>
+                    <a href="/employers/{{ employer.id }}/delete">Удалить</a> 
                 </p>
             {% endif %}
     	</div>
