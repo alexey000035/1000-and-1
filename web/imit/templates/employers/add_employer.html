@@ -16,10 +16,15 @@
         {{ add_form.date.label }} <br/>{{ add_form.date() }} <br/>
         {{ add_form.desc_company.label }} <br/>{{ add_form.desc_company() }} <br/>
         
+        <p> Это поле не обязательно для заполнения </p> {{ add_form.email.label }} <br/>{{ add_form.email() }} <br/>
+        <p> Это поле не обязательно для заполнения </p> {{ add_form.phone.label }} <br/>{{ add_form.phone() }} <br/>
+        <p> Это поле не обязательно для заполнения </p> {{ add_form.practice.label }} <br/>{{ add_form.practice() }} <br/>
+        
         {{ add_form.full_cover_image() }}
 
         {{ add_form.delete_cover_image(style="display:none") }}
         {{ add_form.cropped_cover_image_data.label }} {{ add_form.cropped_cover_image_data() }} <br/>
+        
         <div id="cover_image_block"
                 {% if employer is not defined or not employer.cover_image %}
              style="display: none"
@@ -52,15 +57,5 @@
         	alert( 'Employer added' );
         	window.location.href = "/employers";
         }
-    </script>
-<!--    {% include "file_manager.html" %}-->
-<!--    <script type="text/javascript">-->
-<!--        imit.News.initTinyMCE('#full_text', 'Текст новости');-->
-<!--        {% if post is defined and post.id is defined and post.origin != "vk" %}-->
-<!--            imit.FileManager.initFileManager({"post": {{ post.id }}});-->
-<!--        {% else %}-->
-<!--            imit.FileManager.initFileManager({"block": true, "block_message": "Необходимо сохранить новость"});-->
-<!--        {% endif %}-->
-<!--    </script>-->
 
 {% endblock %}
