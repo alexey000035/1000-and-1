@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Добавить представителя вакансии{% endblock %}
+
+{% block content %}
+    <h1>Добавить представителя вакансии</h1>
+    {% include 'error_flash.html' %}
+    <a href="/page/instruction">Инструкция</a><br/>
+    <br/>
+    <form  method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
+        {{ add_form.csrf_token }}
+        {{ add_form.name.label }} <br/>{{ add_form.name() }} <br/>
+        {{ add_form.surname.label }} <br/>{{ add_form.surname() }} <br/>
+        {{ add_form.second_name.label }} <br/>{{ add_form.second_name() }} <br/>
+        {{ add_form.email.label }}<br/>{{ add_form.email() }} <br/>
+        {{ add_form.phone.label }} <br/>{{ add_form.phone() }} <br/>
+        {{ add_form.telegram.label }} <br/>{{ add_form.telegram() }} <br/>
+        
+        <input type="submit"  onclick='check1()' name="publish" value="Добавить представителя вакансии"/>
+    </form>
+    <script type="text/javascript">
+        function check1() {
+        	alert( 'Employer agent added' );
+        	window.location.href = "/employers";
+        }
+    </script>
+{% endblock %}
