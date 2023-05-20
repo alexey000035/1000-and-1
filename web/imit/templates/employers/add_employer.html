@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
-{% block title %}Adding employer{% endblock %}
+{% block title %}Добавление вакансии{% endblock %}
 
 {% block content %}
-    <h1>Add employer</h1>
+    <h1>Добавление вакансии</h1>
     {% include 'error_flash.html' %}
     <a href="/page/instruction">Инструкция</a><br/>
     <br/>
     <form  method="POST" enctype="multipart/form-data" {% if action is defined %}action="{{ action }}"{% endif %}>
         {{ add_form.csrf_token }}
         {{ add_form.name.label }} <br/>{{ add_form.name() }} <br/>
-        {{ add_form.logo.label }} <br/>{{ add_form.logo() }} <br/>
+        <!---{{ add_form.logo.label }} <br/>{{ add_form.logo() }} <br/> --->
         {{ add_form.link.label }} <br/>{{ add_form.link() }} <br/>
         <!-- name in website instead promo_link who does know?-->
         {{ add_form.promo_link.label }}<p>PROMO_LIMK</p> <br/>{{ add_form.promo_link() }} <br/>
@@ -23,16 +23,15 @@
         {{ add_form.full_cover_image() }}
 
         {{ add_form.delete_cover_image(style="display:none") }}
-        {{ add_form.cropped_cover_image_data.label }} {{ add_form.cropped_cover_image_data() }} <br/>
-        
+        {{ add_form.cropped_cover_image_data.label }} {{ add_form.cropped_cover_image_data() }} <br/>   
         <div id="cover_image_block"
-                {% if employer is not defined or not employer.cover_image %}
+                {% if employer is not defined or not employer.logo %}
              style="display: none"
                 {% endif %}
         >
             <img id="cover_image_preview" width="150" height="150"
-                    {% if employer is defined and employer.cover_image %}
-                 src="/files/covers/{{ employer.cover_image }}"
+                    {% if employer is defined and employer.logo %}
+                 src="/files/covers/{{ employer.logo }}"
                     {% else %}
                  src="#"
                     {% endif %}/>
