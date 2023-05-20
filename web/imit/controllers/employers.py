@@ -37,6 +37,7 @@ def add_employers():
             db.session.add(employer)
             db.session.commit()
 
+
             # Save cover image if any.
             if add_form.cropped_cover_image_data.data:
                 if 'full_cover_image' in request.files:
@@ -49,7 +50,7 @@ def add_employers():
                 else:
                     print("Cropped image is set but full image is not")
                     app.logger.warning("Cropped image is set but full image is not")
-            nid_employer = employer.id
+            #nid_employer = employer.id
             return redirect(f'/employers/add_agent')
             #return redirect(f'/employers/{employer.id}')
         else:
@@ -200,20 +201,21 @@ def _save_cover_image(data, full_file, employer):
     except Exception as e:
         app.logger.error('Error ocurried during cover image file saving: %s', e)
         return False
-    employer.cover_image = full_filename
+    employer.logo = full_filename
     db.session.commit()
     return True
 
 
 def _remove_cover_image(employer):
     try:
-        os.remove(os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", employer.cover_image))
+        os.remove(os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", employer.logo))
         os.remove(os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", "ci_{}.png".format(employer.id)))
     except Exception as e:
         app.logger.error('Error occurred during cover image deletion: %s', e)
         return False
-    employer.cover_image = None
+    employer.logo = None
     db.session.commit()
     return True
+
 
 
