@@ -89,6 +89,14 @@ span.avoidwrap {
     line-height: 0.9em;
 }
 
+.employer_table {
+    background-color: white;
+    border-collapse: collapse;
+}
+tr {
+    border: 1px solid black;
+}
+
 body {
     color: black;
     font-family: 'PT Serif', sans-serif;
