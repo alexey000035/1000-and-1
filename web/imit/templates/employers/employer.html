@@ -18,7 +18,7 @@
         <div class="post-content">
             {% if employer.has_cover_image %}
                 <div style="float:left; margin-right: 25px;">
-		    <a href="/files/covers/{{ employer.cover_image }}" rel="prettyPhoto[{{ employer.id}}]">
+		    <a href="/files/covers/{{ employer.logo }}" rel="prettyPhoto[{{ employer.id}}]">
                     <img src="/files/covers/ci_{{ employer.id }}.png"
                      alt="" height="75"
 		     />
@@ -42,6 +42,7 @@
         </div>
     </main>
     {% if current_user.is_authenticated and current_user.has_role('editor') %}
+        <!---
         <input type="submit" onclick="openForm()" value="Удалить информацию о вакансии">
         <div id="myModal" class="modal" style="display:none;">
             <div class="modal-content">
@@ -52,11 +53,16 @@
                 </form>
             </div>
         </div>
+        --->
         <p class="news-links">
             <a href="/employers/{{ employer.id }}/edit">Редактировать информацию о вакансии</a> 
         </p>
-        
+        <p class="news-links">
+            <a href="/employers/{{ employer.id }}/delete">Удалить информацию о вакансии</a>
+        </p>
+        <!---
         <input type="submit" onclick="openForm()" value="Удалить информацию о контактном лице">
+        
         <div id="myModal" class="modal" style="display:none;">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -66,9 +72,10 @@
                 </form>
             </div>
         </div>
+        --->
         <p class="news-links">
             <a href="/employers/agent/{{ agent.id_empl }}/edit">Редактировать информацию о партнере</a> 
-        </p>
+        </p>s
        
        
     {% endif %}
