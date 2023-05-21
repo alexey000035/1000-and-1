@@ -26,7 +26,10 @@
                     <br/>
                 </div>
             {% endif %}
-        <div class="news-text">{{ employer.desc_company|safe }}</div>
+            <div class="news-text">
+                <h3> Описание компании </h3>
+                {{ employer.desc_company|safe }}
+            </div>
             <a href ='{{ employer.link}}'> {{employer.link}} </a>
         </div>
         <br/>
