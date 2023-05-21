@@ -56,7 +56,7 @@
             event.preventDefault();
             return;
         } else {
-            fetch('/news/add/save', {
+            fetch('/drafts/responderse/save_drafts/', {
             method: 'POST',
             body: new FormData(document.querySelector('form'))
         });

@@ -107,17 +107,28 @@ def edit_sug_news(nid):
     return render_template("suggestion_post.html", add_form=edit_form, sug_post=sug_post, add_file_form=forms.FileForm(),
                            edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
                            
-@app.route('/drafts/responderse/save_drafts/<nid>')
+@app.route('/drafts/responderse/save_drafts/', methods=('GET', 'POST'))
 @role_required('editor')
-def responderse_save_drafts(nid):
-    sug_post = models.Sug_post.query.get_or_404(nid).toPost()
-    draft_post = models.Draft_post()      
-    draft_post.title = sug_post.title
-    draft_post.full_text = sug_post.full_text
-    draft_post.cover_image = sug_post.cover_image
-        
-    db.session.add(draft_post)
-    db.session.delete(sug_post)
-    db.session.commit()
+def responderse_save_drafts():
+    add_form = forms.NewsForm()
+    if request.method == 'POST':
+        if add_form.validate_on_submit():
+            post = models.Draft_post()
+            add_form.populate_obj(post)
+            db.session.add(post)
+            db.session.commit()
 
-    return redirect('/drafts')
+            # Save cover image if any.
+            if add_form.cropped_cover_image_data.data:
+                if 'full_cover_image' in request.files:
+                    file = first(request.files.getlist("full_cover_image"))
+                    if file is not None and not file.filename == '':
+                        _save_cover_image(add_form.cropped_cover_image_data.data, file, post)
+                    else:
+                        print("Cropped image is set but full image is not")
+                        app.logger.warning("Cropped image is set but full image is not")
+                else:
+                    print("Cropped image is set but full image is not")
+                    app.logger.warning("Cropped image is set but full image is not")
+
+    return redirect(f'/')
