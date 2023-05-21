@@ -157,6 +157,9 @@ class Draft_post(db.Model):
         post.cover_image = self.cover_image
         post.is_danger = False
         return post
+    @property
+    def has_cover_image(self):
+        return self.cover_image is not None
 
 class Sug_post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -185,6 +188,7 @@ class Sug_post(db.Model):
                 html = ""
 
         return html  # self.full_text
+    
     def toPost(self):
         post = Post()
 
@@ -193,6 +197,10 @@ class Sug_post(db.Model):
         post.cover_image = self.cover_image
         post.is_danger = False
         return post
+    
+    @property
+    def has_cover_image(self):
+        return self.cover_image is not None
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

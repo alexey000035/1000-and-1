@@ -23,7 +23,6 @@ def add_menu():
             item = models.Menu()
             if add_form.father.data is None or add_form.father.data != "":
                 u = models.Menu.query.filter_by(name=add_form.father.data).first()
-                #print(add_form.father.data)
                 item.father_id = u.id
             add_form.populate_obj(item)
             
@@ -69,7 +68,6 @@ def edit_menu(nid):
             
             
             db.session.commit()
-            
             return redirect('/menu/list')
         else:
             app.logger.debug("Invalid MenuForm input: {}".format(get_form_errors(edit_form)))

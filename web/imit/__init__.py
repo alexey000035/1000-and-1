@@ -7,6 +7,7 @@ import logging, logging.handlers
 import os.path
 from flask_babel import Babel
 from sqlalchemy import desc, asc
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -37,11 +38,19 @@ if not app.debug:
     for logger in loggers:
         logger.addHandler(file_handler)
 
-@app.context_processor
+#@db.event.listens_for(db.session, 'after_commit')
+#@app.context_processor
+
+session_manager = scoped_session(sessionmaker(bind=db.engine))
+
+@app.before_first_request
 def inject_items_list():
+    session = session_manager()
     def get_items_list():
         return models.Menu.query.order_by(asc(models.Menu.number))
-    return dict(items_list = get_items_list())
+    items = get_items_list()
+    session.close()
+    return dict(items_list = items)
 
 import imit.models
 import imit.controllers.main

@@ -66,7 +66,7 @@ def delete_sug_news(nid):
     db.session.delete(sug_post)
     db.session.commit()
     return redirect('/drafts/responderse')
-    
+
 @app.route('/drafts/responderse/<nid>/edit', methods=('GET', 'POST'))
 @role_required('editor')
 def edit_sug_news(nid):
@@ -106,3 +106,18 @@ def edit_sug_news(nid):
     edit_form.full_text.data = sug_post.full_text
     return render_template("suggestion_post.html", add_form=edit_form, sug_post=sug_post, add_file_form=forms.FileForm(),
                            edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
+                           
+@app.route('/drafts/responderse/save_drafts/<nid>')
+@role_required('editor')
+def responderse_save_drafts(nid):
+    sug_post = models.Sug_post.query.get_or_404(nid).toPost()
+    draft_post = models.Draft_post()      
+    draft_post.title = sug_post.title
+    draft_post.full_text = sug_post.full_text
+    draft_post.cover_image = sug_post.cover_image
+        
+    db.session.add(draft_post)
+    db.session.delete(sug_post)
+    db.session.commit()
+
+    return redirect('/drafts')

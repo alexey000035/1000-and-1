@@ -1,13 +1,14 @@
 from flask import abort
 from imit import app, models, forms, db, babel
 import imit.utils as utils
-from imit.utils import role_required, flash_errors, get_form_errors
+from imit.utils import role_required, flash_errors, get_form_errors, first
 from flask import render_template, request, redirect, make_response, g, jsonify, flash
 import flask_login
 from sqlalchemy import desc, asc
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
+import base64
 
 @app.route('/')
 def index_page():
@@ -44,7 +45,7 @@ def sug_news():
                 if 'full_cover_image' in request.files:
                     file = first(request.files.getlist("full_cover_image"))
                     if file is not None and not file.filename == '':
-                        _save_cover_image(add_form.cropped_cover_image_data.data, file, post)
+                        _save_cover_image(add_form.cropped_cover_image_data.data, file, sug_post)
                     else:
                         print("Cropped image is set but full image is not")
                         app.logger.warning("Cropped image is set but full image is not")
@@ -63,6 +64,26 @@ def sug_news():
                            edit_file_form=forms.FileEditForm(),
                            remove_file_form=forms.FileRemoveForm()
                            )
+
+def _save_cover_image(data, full_file, sug_post):
+    app.logger.debug("Adding cover image to sug_news %s", sug_post.id)
+    if data is None or sug_post is None:
+        app.logger.error("None is not accepted")
+        return False
+    filename = secure_filename("ci_{}.png".format(sug_post.id))
+    fn, file_extension = os.path.splitext(full_file.filename)
+    full_filename = secure_filename("ci_{}_full{}".format(sug_post.id, file_extension))
+    try:
+        app.logger.debug("Storing images %s and %s to drive", filename, full_filename)
+        with open(os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", filename), "wb") as fh:
+            fh.write(base64.b64decode(data.split(",")[1]))
+        full_file.save(os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", full_filename))
+    except Exception as e:
+        app.logger.error('Error ocurried during cover image file saving: %s', e)
+        return False
+    sug_post.cover_image = full_filename
+    db.session.commit()
+    return True
 
 @app.route('/new_header')
 def test_page():
@@ -278,7 +299,6 @@ def remove_file():
             app.logger.debug("Invalid FileRemoveForm input: {}".format(get_form_errors(form)))
 
     return jsonify({"result": result})
-
 
 @app.login_manager.unauthorized_handler
 def unauthorized_handler():

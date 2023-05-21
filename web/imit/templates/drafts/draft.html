@@ -17,7 +17,25 @@
 		      {{ draft_post.title }}
 		      </span></a>
         {% endif %}
+      <div class="post-content">
+            {% if draft_post.has_cover_image %}
+                <div style="float:left; margin-right: 10px;">
+		    <a href="/files/covers/{{ draft_post.cover_image }}" rel="prettyPhoto[{{ draft_post.id}}]">
+                    <img src="/files/covers/ci_{{ draft_post.id }}.png" alt=""
+                         full-cover-image="/files/covers/{{ draft_post.cover_image }}"
+                         height="75"/> </a><br/>
+                </div>
+            {% endif %}
+	    {% if (draft_post.title.strip()) %}
+            {% if draft_post.short_text %}
+
+                <div class="news-text">{{ draft_post.short_text | safe }} </div>
+
+            {% endif %}
+        {% endif %}
+        </div>
     </div>
+    <div style="clear: left; height: 0.5em;"></div>
     <div>
                 <p>
                     <a href="/drafts/{{ draft_post.id }}/edit">Редактировать</a> |

@@ -1,0 +1,118 @@
+<header class="header">
+  {% if current_user.is_authenticated %}
+     <div class="management-panel">
+     {% if current_user.has_role('editor') or current_user.has_role('admin') %}
+        <a href="/management">Управление</a> | 
+      {% endif %}
+      <a href="/logout">{{ _('Выйти') }} </a>
+    </div>
+  {% endif %}
+  
+  <div id="head-petrsu">
+        <div class="head-logo"><a href="https://petrsu.ru/">
+            <!--img width="70" src="/images/petrsu-logo.png"--></a>
+        </div>
+        <div class="head-title">
+            <a id="petrsu-label" href="https://petrsu.ru/">
+	        <!--img src="/images/petrsu-logo.png" style="height:30pt; margin-right:30px;"/-->
+                <span class="avoidwrap">Петрозаводский</span>
+                <span class="avoidwrap">государственный</span>
+                <span class="avoidwrap">университет</span>
+            </a>
+        </div>
+        <div class="head-title-short">
+            <a id="petrsu-label" href="https://petrsu.ru/">
+	      <img src="./images/petrsu-logo.png" style="height:30pt;
+							 margin-right:20px;"> 
+	      ПетрГУ</a>
+        </div>
+    </div>
+    
+    <div id="head-imit" style="margin-top:-10px;">
+      <a href="http://issuesofanalysis.petrsu.ru/">
+	<img id="head-image-iss" src="/images/iss-of-analysis.jpg" align="left"
+	     style="height:100px; margin-left:2%"/>
+      </a>
+      <img id="head-image-tux" src="/images/tux.svg" 
+	   alt="logo linux tux (c) Larry Ewing"
+	   style="height:100px;margin-right:2%"
+	   title="(c) Larry Ewing, Simon Budig, Garrett LeSage" align="right"/>
+      <h1 id="title"><a href="https://imit.petrsu.ru/">
+          <span class="avoidwrap">Институт математики</span>
+          <span class="avoidwrap">и информационных технологий</span></a>
+          <a style='line-height: 10px; vertical-align: bottom;' href='https://vk.com/mit.petrsu'>
+            <img src='/images/vk-logo.svg' height='25px' alt='vk'/></a>
+      </h1>
+      <h1 id="title-short"><a href="https://imit.petrsu.ru/">ИМИТ</a>
+      </h1>
+      <center style="margin-top:-10px;">
+        <img id="head-image-center" src="/images/g3217.png" 
+	     style="width:40%; min-width:100px;">
+      </center>
+        <!--table id="header-images">
+            <tr>
+                <td>
+                    <img width="230" src="/images/2-4.png"/>
+                </td>
+                <td>
+                    <img width="230" src="/images/fin-auto-1.png"/>
+                </td>
+                <td>
+                    <img width="230" src="/images/mark-pro-1.gif"/>
+                </td>
+                <td>
+                    <img width="230" src="/images/mslinux660.jpg"/>
+                </td>
+            </tr>
+        </table-->
+    </div>
+    <div class="line-bot-s"></div>
+<ul id="menu">
+{% for item in items_list %}
+{% if item.father_id is none %}
+<li class="one"><a href="{{ item.link }}">{{ item.name }}</a>
+
+{% if item.name == "Институт" %}
+<div class="dropdown_2columns">
+{% for item1 in items_list if item1.father_id == item.id %}
+<div class="col_2">
+<a href="{{ item1.link }}"><h{{item1.size}}>{{ item1.name }}</h{{item1.size}}></a>
+{% if item1.name == "Структура" %}
+<div class="col_2">
+<ul class="sub">
+{% for item2 in items_list if item2.father_id == item1.id %}
+<li><a href="{{ item2.link }}" class="strong">{{ item2.name }}</a></li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+{% if item.name == "Обучение" %}
+<div class="dropdown_3columns">
+<ul>
+{% for item1 in items_list if item1.father_id == item.id and item1.link != "" %}
+<li style="line-height:1.2em;"><a href="{{ item1.link }}" class="strong">{{ item1.name }}</a><br/></li>
+{% endfor %}
+</ul>
+
+{% for item1 in items_list if item1.link == "" %}
+<div class="col_1">
+<h{{item1.size}}>{{ item1.name }}</h{{item1.size}}>
+<ul>
+{% for item2 in items_list if item2.father_id == item1.id %}
+<li style="line-height:1.2em;"><a href="{{ item2.link }}">{{ item2.name }}</a><br/></li>
+{% endfor %}
+</ul>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+</li>
+{% endif %}
+{% endfor %}
+</ul>
