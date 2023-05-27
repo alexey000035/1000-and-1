@@ -131,8 +131,8 @@ class Draft_post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.Text())
     full_text = db.Column(db.Text())
-    cover_image = db.Column(db.Text())
-
+    cover_image = cover_image = db.Column(db.Boolean)
+    
     @property
     def short_text(self):
         # fix: Если нет тегов => BeautifulSoup-> None
@@ -157,9 +157,6 @@ class Draft_post(db.Model):
         post.cover_image = self.cover_image
         post.is_danger = False
         return post
-    @property
-    def has_cover_image(self):
-        return self.cover_image is not None
 
 class Sug_post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -202,12 +199,18 @@ class Sug_post(db.Model):
     def has_cover_image(self):
         return self.cover_image is not None
 
+class Image(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(256))
+    type_post = db.Column(db.String(256))
+    id_post = db.Column(db.Integer)
+    
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256))
     full_text = db.Column(db.Text())
     date_created = db.Column(db.DateTime())
-    cover_image = db.Column(db.String(512))
+    cover_image = db.Column(db.Boolean)
     is_advert = db.Column(db.Boolean)
     is_danger = db.Column(db.Boolean)
     advert_for_id = db.Column(db.Integer, db.ForeignKey('page.id'))
@@ -242,10 +245,6 @@ class Post(db.Model):
                 html = ""
 
         return html#self.full_text
-
-    @property
-    def has_cover_image(self):
-        return self.cover_image is not None
 
 
 class File(db.Model):

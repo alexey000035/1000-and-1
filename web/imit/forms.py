@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField, FileRequired
 from wtforms import StringField, PasswordField, HiddenField, TextAreaField, validators, BooleanField, IntegerField
 from wtforms.fields import DateField
+from wtforms.fields.simple import MultipleFileField
 
 class LoginForm(FlaskForm):
     uid = StringField("Имя пользователя",
@@ -27,7 +28,7 @@ class NewsForm(FlaskForm):
                          validators.Length(min=3, max=256,
                                            message="Необходим текст не более 256 символов и не менее 3")])
     delete_cover_image = BooleanField("", default=False)
-    full_cover_image = FileField("Титульное изображение",
+    full_cover_image = MultipleFileField("Титульное изображение",
                                  [validators.Optional(), FileAllowed(['jpg', 'png', 'jpeg', 'gif'],
                                                                      'Допустимы только файлы изображений!')])
     cropped_cover_image_data = \

@@ -16,15 +16,15 @@
     <span class="title">{{ post.title }}</span>
     <br/>
     <div class="post-content">
-        {% if post.has_cover_image %}
-            <div style="float:left; margin-right: 25px;">
-		<a href="/files/covers/{{ post.cover_image }}" rel="prettyPhoto[{{ post.id}}]">
-                <img src="/files/covers/ci_{{ post.id }}.png"
-                     alt="" height="75"
-		     />
-		</a>
-                <br/>
-            </div>
+        {% if post.cover_image %}
+            {% for image in images %}
+                <div style="float:left; margin-right: 10px;">
+		            <a href="/files/covers/{{ image.filename }}" rel="prettyPhoto[{{ post.id}}]">
+                <img src="/files/covers/{{ image.filename }}" alt=""
+                         full-cover-image="/files/covers/{{ image.filename }}_full.png"
+                height="75"/> </a><br/>
+                </div>
+            {% endfor%}
         {% endif %}
         <div class="news-text">{{ post.full_text|safe }}</div>
     </div>

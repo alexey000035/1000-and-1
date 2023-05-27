@@ -19,14 +19,19 @@
              style="display: none"
                 {% endif %}
         >
+            {% if post is defined and post.cover_image %}
+            {% for image in images %}
             <img id="cover_image_preview" width="150" height="150"
-                    {% if post is defined and post.cover_image %}
-                 src="/files/covers/{{ post.cover_image }}"
-                    {% else %}
-                 src="#"
-                    {% endif %}/>
+                 src="/files/covers/{{ image.filename }}"/>
             <br/>
-            <button id="delete_cover_image_button">Удалить изображение</button>
+            {% endfor %}
+            {% else %}
+            <img id="cover_image_preview" width="150" height="150"
+                 src="#"/>
+            <br/>
+            {% endif %}
+            
+            <button id="delete_cover_image_button">Удалить изображения</button>
             <br/>
         </div>
 

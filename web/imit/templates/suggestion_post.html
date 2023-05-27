@@ -10,7 +10,7 @@
         {{ add_form.csrf_token }}
         {{ add_form.title.label }} {{ add_form.title() }} <br/>
         {{ add_form.full_cover_image() }}
-
+        
         {{ add_form.delete_cover_image(style="display:none") }}
         {{ add_form.cropped_cover_image_data.label }} {{ add_form.cropped_cover_image_data() }} <br/>
         <div id="cover_image_block"

@@ -67,13 +67,17 @@
         {% endif %}
         <br/>
         <div class="post-content">
-            {% if post.has_cover_image %}
-                <div style="float:left; margin-right: 10px;">
-		    <a href="/files/covers/{{ post.cover_image }}" rel="prettyPhoto[{{ post.id}}]">
-                    <img src="/files/covers/ci_{{ post.id }}.png" alt=""
-                         full-cover-image="/files/covers/{{ post.cover_image }}"
+            {% if post.cover_image %}
+                {% for image in images %}
+                        {% if image.id_post == post.id %}
+                            <div style="float:left; margin-right: 10px;">
+		                        <a href="/files/covers/{{ image.filename }}" rel="prettyPhoto[{{ post.id}}]">
+                            <img src="/files/covers/{{ image.filename }}" alt=""
+                         full-cover-image="/files/covers/{{ image.filename }}_full.png"
                          height="75"/> </a><br/>
-                </div>
+                            </div>
+                        {% endif %}
+                {% endfor%}
             {% endif %}
 	    {% if (post.title.strip()) %}
             {% if post.short_text %}

@@ -17,7 +17,8 @@ def draft_page():
 @role_required('editor')
 def news_draft_page():
     draft_posts = models.Draft_post.query
-    return render_template('/drafts/draft.html', draft_posts = draft_posts)
+    images = models.Image.query.filter(models.Image.type_post == "draft_post")
+    return render_template('/drafts/draft.html', draft_posts = draft_posts, images = images)
     
 @app.route('/drafts/<nid>')
 def news_drafts_full_text_page(nid):

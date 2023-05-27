@@ -20,7 +20,8 @@ def index_page():
         .order_by(desc(models.Post.date_created))
     pages_ads = models.Ads.query.filter(models.Ads.date_created.between(year, end_year)) \
         .order_by(desc(models.Ads.date_created))
-    return render_template('index.html', full=False, posts=pages, ads=pages_ads, cur_year=year.year, years=years, year_selected=True)
+    images = models.Image.query.filter(models.Image.type_post == "post")
+    return render_template('index.html', full=False, posts=pages, ads=pages_ads, cur_year=year.year, years=years, year_selected=True, images = images)
 
 
 @app.route('/about')

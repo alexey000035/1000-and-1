@@ -18,13 +18,17 @@
 		      </span></a>
         {% endif %}
       <div class="post-content">
-            {% if draft_post.has_cover_image %}
-                <div style="float:left; margin-right: 10px;">
-		    <a href="/files/covers/{{ draft_post.cover_image }}" rel="prettyPhoto[{{ draft_post.id}}]">
-                    <img src="/files/covers/ci_{{ draft_post.id }}.png" alt=""
-                         full-cover-image="/files/covers/{{ draft_post.cover_image }}"
+            {% if draft_post.cover_image %}
+                {% for image in images %}
+                        {% if image.id_post == draft_post.id %}
+                            <div style="float:left; margin-right: 10px;">
+		                        <a href="/files/covers/{{ image.filename }}" rel="prettyPhoto[{{ draft_post.id}}]">
+                            <img src="/files/covers/{{ image.filename }}" alt=""
+                         full-cover-image="/files/covers/{{ image.filename }}_full.png"
                          height="75"/> </a><br/>
-                </div>
+                            </div>
+                        {% endif %}
+                {% endfor%}
             {% endif %}
 	    {% if (draft_post.title.strip()) %}
             {% if draft_post.short_text %}
