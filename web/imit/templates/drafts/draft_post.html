@@ -16,17 +16,19 @@
     <span class="title">{{ draft_post.title }}</span>
     <br/>
     <div class="post-content">
-        {% if draft_post.has_cover_image %}
-            <div style="float:left; margin-right: 25px;">
-		<a href="/files/covers/{{ draft_post.cover_image }}" rel="prettyPhoto[{{ draft_post.id}}]">
-                <img src="/files/covers/ci_{{ draft_post.id }}.png"
-                     alt="" height="75"
-		     />
-		</a>
-                <br/>
-            </div>
+        {% if draft_post.cover_image %}
+            {% for image in images %}
+                {% if image.id_post == draft_post.id %}
+                    <div style="float:left; margin-right: 10px;">
+		                <a href="/files/covers/{{ image.filename }}" rel="prettyPhoto[{{ draft_post.id}}]">
+                    <img src="/files/covers/{{ image.filename }}" alt=""
+                         full-cover-image="/files/covers/{{ image.filename }}_full.png"
+                         height="75"/> </a><br/>
+                    </div>
+                {% endif %}
+            {% endfor%}
         {% endif %}
-        <div class="news-text">{{ draft_post.full_text|safe }}</div>
+    <div class="news-text">{{ draft_post.full_text|safe }}</div>
     </div>
     <br/>
 

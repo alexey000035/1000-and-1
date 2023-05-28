@@ -131,7 +131,7 @@ class Draft_post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.Text())
     full_text = db.Column(db.Text())
-    cover_image = cover_image = db.Column(db.Boolean)
+    cover_image = db.Column(db.Boolean)
     
     @property
     def short_text(self):
@@ -215,7 +215,7 @@ class Post(db.Model):
     is_danger = db.Column(db.Boolean)
     advert_for_id = db.Column(db.Integer, db.ForeignKey('page.id'))
     advert_for = db.relationship('Page', backref=db.backref('adverts', lazy='dynamic'))
-
+    
     def __init__(self, date=None):
         if date is None:
             self.date_created = datetime.now()  # TODO: check for timezone

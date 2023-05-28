@@ -23,7 +23,8 @@ def news_draft_page():
 @app.route('/drafts/<nid>')
 def news_drafts_full_text_page(nid):
     draft_post = models.Draft_post.query.get_or_404(nid)
-    return render_template('drafts/draft_post.html', draft_post=draft_post)
+    images = models.Image.query.filter(models.Image.id_post == draft_post.id)
+    return render_template('drafts/draft_post.html', draft_post=draft_post, images = images)
 
 @app.route('/drafts/drafts_ads')
 @role_required('editor')

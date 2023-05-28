@@ -117,7 +117,8 @@ def add_news_save():
             type_post = "draft_post"
             post = models.Draft_post()
             add_form.populate_obj(post)
-
+            
+            post.cover_image = 0
             db.session.add(post)
             db.session.commit()
 
@@ -141,17 +142,20 @@ def add_news_save():
                     app.logger.warning("Cropped image is set but full image is not")
     return redirect(f'/')
 
+
 @app.route('/drafts/<nid>/delete')
 @role_required('editor')
 def delete_draft_news(nid):
+    type_post = "post"
     post = models.Draft_post.query.get_or_404(nid)
     app.logger.debug("News with id %s is being deleted", nid)
-    # for file in post.files:
-    #     if not remove_file(file):
-    #         return "Ошибка при удалении файла"
-    # # Delete cover image
-    # if post.has_cover_image:
-    #     _remove_cover_image(post)
+    #for file in post.files:
+    #    if not remove_file(file):
+    #        return "Ошибка при удалении файла"
+    # Delete cover image
+    if post.cover_image:
+        #_remove_cover_image(post)
+        _remove_image(post, type_post)
     db.session.delete(post)
     db.session.commit()
     return redirect('/drafts')
@@ -161,31 +165,49 @@ def delete_draft_news(nid):
 @role_required('editor')
 def edit_draft_news(nid):
     edit_form = forms.NewsForm()
+    draft_post = models.Draft_post.query.get_or_404(nid)
     post = models.Draft_post.query.get_or_404(nid).toPost()
+    images = models.Image.query.filter(models.Image.id_post == nid).filter(models.Image.type_post == "draft_post")
     if request.method == 'POST':
         if edit_form.validate_on_submit():
+            type_post = "draft_post"
             app.logger.debug("News with id %s is being edited", nid)
             edit_form.populate_obj(post)
             if edit_form.date.data is not None and edit_form.date.data != "":
                 post.date_created = datetime.strptime(edit_form.date.data, "%d.%m.%Y")
             db.session.add(post)
-            db.session.commit()
-
+            db.session.commit()          
+            
             # Delete cover image if any
-            if edit_form.delete_cover_image.data and post.has_cover_image:
-                _remove_cover_image(post)
-            # Save cover image if any.
             if edit_form.cropped_cover_image_data.data:
-                if post.has_cover_image:
-                    _remove_cover_image(post)
                 if 'full_cover_image' in request.files:
-                    file = first(request.files.getlist("full_cover_image"))
-                    if file is not None and not file.filename == '':
-                        _save_cover_image(edit_form.cropped_cover_image_data.data, file, post)
-                    else:
-                        app.logger.warning("Cropped image is set but full image is not")
+                    #file = first(request.files.getlist("full_cover_image"))
+                    post.cover_image = 1
+                    images = request.files.getlist("full_cover_image")
+                    i = 1 #счетчик фото для названия
+                    type_post = "post"
+                    for image in images:
+                        _save_image(edit_form.cropped_cover_image_data.data, image, post, i, type_post)
+                        i += 1
+                    #if file is not None and not file.filename == '':
+                    #    _save_cover_image(add_form.cropped_cover_image_data.data, file, post)
+                    #else:
+                    #    print("Cropped image is set but full image is not")
+                    #    app.logger.warning("Cropped image is set but full image is not")
                 else:
+                    print("Cropped image is set but full image is not")
                     app.logger.warning("Cropped image is set but full image is not")
+                
+                if draft_post.cover_image:
+                    _remove_image(draft_post, type_post)
+            else:
+                if draft_post.cover_image:
+                    i = 1 #счетчик фото для названия
+                    type_post = "post"
+                    _rename_image(draft_post, post)
+                    
+            db.session.delete(draft_post)
+            db.session.commit()                
             return redirect('/news')
         else:
             app.logger.debug("Invalid NewsForm input: {}".format(get_form_errors(edit_form)))
@@ -195,7 +217,7 @@ def edit_draft_news(nid):
     edit_form.title.data = post.title
     edit_form.full_text.data = post.full_text
     return render_template("news/add_news.html", add_form=edit_form, post=post, add_file_form=forms.FileForm(),
-                           edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm())
+                           edit_file_form=forms.FileEditForm(), remove_file_form=forms.FileRemoveForm(), images = images)
 
 
 @app.route('/news/<nid>/edit', methods=('GET', 'POST'))
@@ -203,7 +225,7 @@ def edit_draft_news(nid):
 def edit_news(nid):
     edit_form = forms.NewsForm()
     post = models.Post.query.get_or_404(nid)
-    images = models.Image.query.filter(models.Image.id_post == post.id)
+    images = models.Image.query.filter(models.Image.id_post == post.id).filter(models.Image.type_post == "post")
     if request.method == 'POST':
         if edit_form.validate_on_submit():
             type_post = "post"
@@ -215,11 +237,11 @@ def edit_news(nid):
 
             # Delete cover image if any
             if edit_form.delete_cover_image.data and post.cover_image:
-                _remove_image(post)
+                _remove_image(post, type_post)
             # Save cover image if any.
             if edit_form.cropped_cover_image_data.data:
                 if post.cover_image:
-                    _remove_image(post)
+                    _remove_image(post, type_post)
                 if 'full_cover_image' in request.files:
                     #file = first(request.files.getlist("full_cover_image"))
                     post.cover_image = 1
@@ -251,15 +273,16 @@ def edit_news(nid):
 @app.route('/news/<nid>/delete')
 @role_required('editor')
 def delete_news(nid):
+    type_post = "post"
     post = models.Post.query.get_or_404(nid)
     app.logger.debug("News with id %s is being deleted", nid)
-    for file in post.files:
-        if not remove_file(file):
-            return "Ошибка при удалении файла"
+    #for file in post.files:
+    #    if not remove_file(file):
+    #        return "Ошибка при удалении файла"
     # Delete cover image
     if post.cover_image:
         #_remove_cover_image(post)
-        _remove_image(post)
+        _remove_image(post, type_post)
     db.session.delete(post)
     db.session.commit()
     return redirect('/news')
@@ -288,13 +311,44 @@ def _save_image(data, file, post, i, type_post):
     db.session.commit()
     return True
 
-def _remove_image(post):
+def _rename_image(old_post, new_post):
+    images = models.Image.query.filter(models.Image.id_post == old_post.id)
+    i = 1
+    for image in images:
+        print("Цикл работает")
+        try:
+            old_name = os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", image.filename)
+            fn, file_extension = os.path.splitext(image.filename)
+            new_name = os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", "post_{}_{}_full{}".format(new_post.id, i, file_extension))
+            os.rename(old_name, new_name)
+            
+            filename = secure_filename("{}_{}_{}.png".format("draft_post", old_post.id, i))
+            old_name = os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", filename)
+            new_name = os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", "post_{}_{}.png".format(new_post.id, i))
+            os.rename(old_name, new_name)
+            
+            
+            image1 = models.Image()
+            image1.filename = "post_{}_{}_full{}".format(new_post.id, i, file_extension)
+            image1.type_post = "post"
+            image1.id_post = new_post.id
+            db.session.add(image1)
+            db.session.delete(image)
+            print("try работает")
+        except Exception as e:
+            app.logger.error('Error ocurried during cover image file saving: %s', e)
+            return False
+        i += 1
+    db.session.commit()
+    return True
+    
+def _remove_image(post, type_post):
     images = models.Image.query.filter(models.Image.id_post == post.id)
     i = 1
     for image in images:
         try:
             os.remove(os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", image.filename))
-            os.remove(os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", "post_{}_{}.png".format(post.id, i)))
+            os.remove(os.path.join(app.config['FILE_UPLOAD_PATH'], "covers", "{}_{}_{}.png".format(type_post, post.id, i)))
             db.session.delete(image)
         except Exception as e:
             app.logger.error('Error occurred during cover image deletion: %s', e)
@@ -304,11 +358,6 @@ def _remove_image(post):
     
     db.session.commit()
     return True
-
-
-
-
-
 
 def _save_cover_image(data, full_file, post):
     app.logger.debug("Adding cover image to news %s", post.id)

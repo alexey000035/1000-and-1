@@ -10,7 +10,7 @@
         {{ add_form.csrf_token }}
         {{ add_form.title.label }} {{ add_form.title() }} <br/>
         {{ add_form.date(style="display:none") }}<br/>
-        {{ add_form.full_cover_image() }}
+        {{ add_form.full_cover_image }}
 
         {{ add_form.delete_cover_image(style="display:none") }}
         {{ add_form.cropped_cover_image_data.label }} {{ add_form.cropped_cover_image_data() }} <br/>
@@ -45,7 +45,6 @@
         </div>
         {{ add_form.full_text.label }} {{ add_form.full_text() }} <br/>
         <input type="submit"  name="publish" value="Опубликовать"/>
-<!--        <input type="submit"  name="publish" value="Опубликовать"/>-->
     </form>
     <script type="text/javascript">
         const myForm = document.getElementById('myForm');;
@@ -58,7 +57,7 @@
             myForm.submit();
         });
         
-        function btn(event) {
+        function save_draft(event) {
         if (document.querySelector('form input[name="title"]').value.length === 0) {
             alert('Заполните поле заголовка');
             event.preventDefault();
@@ -77,20 +76,13 @@
         }
         }
    </script>
-
-    <button name= "save"  onclick='btn()' value="Сохранить как черновик">Добавить в черновики</button>
-
+    <button name= "save_draft"  onclick='save_draft()' value="Сохранить как черновик">Добавить в черновики</button>
     <!-- <button  onclick='alert("тык"); return false'>Опубликовать</button>
     <button >Сохранить как черновик</button> -->
     <br/>
-<!--    {% include "file_manager.html" %}-->
-<!--    <script type="text/javascript">-->
-<!--        imit.News.initTinyMCE('#full_text', 'Текст новости');-->
-<!--        {% if post is defined and post.id is defined and post.origin != "vk" %}-->
-<!--            imit.FileManager.initFileManager({"post": {{ post.id }}});-->
-<!--        {% else %}-->
-<!--            imit.FileManager.initFileManager({"block": true, "block_message": "Необходимо сохранить новость"});-->
-<!--        {% endif %}-->
-<!--    </script>-->
-
+    <!--
+    <script type="text/javascript">
+        imit.News.initTinyMCE('#full_text', 'Текст новости');
+   </script>
+    -->
 {% endblock %}
